@@ -1,0 +1,15 @@
+.pk-snackbar {
+  color: var(--color-text-on-dark);
+
+  &.success {
+    background-color: var(--color-primary);
+  }
+
+  &.warning {
+    background-color: var(--color-accent);
+  }
+
+  &.error {
+    background-color: var(--color-warn);
+  }
+}

@@ -1,0 +1,29 @@
+.pk-notifications {
+  max-width: 300px !important;
+  max-height: 500px !important;
+}
+
+.pk-notifications__item {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--color-bg);
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  mat-icon {
+    font-size: 1rem;
+    position: relative;
+    top: 3px;
+  }
+
+  span {
+    font-size: 0.75rem;
+  }
+}
+
+.pk-notifications__clear-btn {
+  margin-top: 1rem !important;
+  width: 300px;
+}

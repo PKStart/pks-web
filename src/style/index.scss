@@ -1,0 +1,33 @@
+@import './material-theme';
+@import './variables';
+
+html,
+body {
+  height: 100%;
+
+  *:not(mat-icon) {
+    box-sizing: border-box;
+  }
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-on-dark);
+
+  &.pk-light-theme {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-on-light);
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+}
+
+@import './main-box';
+@import './scrollbar';
+@import './snackbar';
+@import './notifications';

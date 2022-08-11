@@ -1,0 +1,29 @@
+html {
+  --color-primary: #03a9f4;
+  --color-accent: #ff5722;
+  --color-warn: #f44336;
+  --color-bg-dark: #303030;
+  --color-bg-dark-alt: #212121;
+  --color-card-bg-dark: #424242;
+  --color-bg-light: #eaf3ff;
+  --color-bg-light-alt: #f5f5f5;
+  --color-card-bg-light: #fff;
+  --color-text-on-dark: #fff;
+  --color-text-on-light: rgba(0, 0, 0, 0.87);
+  --color-bg-opaque: rgba(33, 33, 33, 0.75);
+  --color-bg-opaque-lighter: rgba(65, 65, 65, 0.75);
+}
+
+body {
+  --color-bg: var(--color-bg-dark);
+  --color-bg-alt: var(--color-bg-dark-alt);
+  --color-card-bg: var(--color-card-bg-dark);
+  --color-text: var(--color-text-on-dark);
+
+  &.pk-light-theme {
+    --color-bg: var(--color-bg-light);
+    --color-bg-alt: var(--color-bg-light-alt);
+    --color-card-bg: var(--color-card-bg-light);
+    --color-text: var(--color-text-on-light);
+  }
+}
