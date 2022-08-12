@@ -9,8 +9,8 @@
     "build": "npm run setenv && ng build",
     "watch": "npm run setenv && ng build --watch --configuration development",
     "lint": "ng lint",
-    "format:check": "prettier --check  \"src/**/*.{ts,scss,html,json}\" \"cypress/**/*.{ts,scss,html,json}\"",
-    "e2e:watch": "cypress open",
+    "format:check": "prettier --check  \"src/**/*.{ts,scss,html,json}\"",
+    "format": "prettier --write  \"src/**/*.{ts,scss,html,json}\"",
     "setenv": "node scripts/setenv.js",
     "prepare": "husky install"
   },
