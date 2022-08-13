@@ -1,6 +1,7 @@
-const { writeFile } = require("fs");
-
+const { writeFile, readFileSync } = require("fs");
+const { resolve } = require("path");
 require("dotenv").config({ path: ".env" });
+
 
 const environments = ["DEV", "PROD"];
 
@@ -11,6 +12,9 @@ const paths = {
   PROD: "./src/environments/environment.prod.ts",
 };
 
+const packageJson = readFileSync(resolve(__dirname, '..', 'package.json'))
+const version = JSON.parse(packageJson).version
+
 environments.forEach((env) => {
   const isProd = env === "PROD";
   let variableList = "";
@@ -20,6 +24,7 @@ environments.forEach((env) => {
   const content = `
 export const environment = {
   production: ${isProd},
+  version: ${version},
 ${variableList}
 }
   `;
