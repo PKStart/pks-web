@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "main": {
+    "pks-web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -70,10 +70,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "main:build:production"
+              "browserTarget": "pks-web:build:production"
             },
             "development": {
-              "browserTarget": "main:build:development"
+              "browserTarget": "pks-web:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -84,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "main:build"
+            "browserTarget": "pks-web:build"
           }
         },
         "test": {
@@ -103,37 +103,37 @@
         "cypress-run": {
           "builder": "@briebug/cypress-schematic:cypress",
           "options": {
-            "devServerTarget": "main:serve"
+            "devServerTarget": "pks-web:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "main:serve:production"
+              "devServerTarget": "pks-web:serve:production"
             }
           }
         },
         "cypress-open": {
           "builder": "@briebug/cypress-schematic:cypress",
           "options": {
-            "devServerTarget": "main:serve",
+            "devServerTarget": "pks-web:serve",
             "watch": true,
             "headless": false
           },
           "configurations": {
             "production": {
-              "devServerTarget": "main:serve:production"
+              "devServerTarget": "pks-web:serve:production"
             }
           }
         },
         "e2e": {
           "builder": "@briebug/cypress-schematic:cypress",
           "options": {
-            "devServerTarget": "main:serve",
+            "devServerTarget": "pks-web:serve",
             "watch": true,
             "headless": false
           },
           "configurations": {
             "production": {
-              "devServerTarget": "main:serve:production"
+              "devServerTarget": "pks-web:serve:production"
             }
           }
         },
@@ -146,7 +146,7 @@
       }
     }
   },
-  "defaultProject": "main",
+  "defaultProject": "pks-web",
   "cli": {
     "defaultCollection": "@angular-eslint/schematics"
   }
