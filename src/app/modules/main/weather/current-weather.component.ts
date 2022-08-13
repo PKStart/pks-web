@@ -156,7 +156,7 @@ export class CurrentWeatherComponent implements OnDestroy {
   }
   public loading$ = this.weatherService.loading$
   public location = ''
-  public today = format(new Date(), 'dddd, yyyy MMMM D')
+  public today = format(new Date(), 'dddd, yyyy MMMM d')
   public current: CurrentWeather | undefined
   public daily: DailyWeather[] = []
   private subscription = new Subscription()
