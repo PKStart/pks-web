@@ -27,6 +27,8 @@ To make use of this trick it is essential to only run or build the main frontend
 ### DEV Server
 To run the development server for the frontend, simply use the `npm run start` script and open your browser at [http://localhost:8200](http://localhost:8200).
 
+To run the dev server with the production configuration (thus connecting to the deployed prod API and DB), run the `npm run start:prod` command.
+
 
 CI pipelines and testing
 ------------------------
