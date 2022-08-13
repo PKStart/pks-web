@@ -5,6 +5,7 @@ import { BirthdaysService } from '../birthdays/birthdays.service'
 import { DataBackupService } from '../data-backup/data-backup.service'
 import { SettingsService } from '../settings/settings-service'
 import { AppBarService } from './app-bar.service'
+import { environment } from '../../../../environments/environment'
 
 @Component({
   selector: 'pk-app-bar',
@@ -72,6 +73,8 @@ import { AppBarService } from './app-bar.service'
           <mat-icon>logout</mat-icon>
           <span>Log out</span>
         </button>
+        <mat-divider></mat-divider>
+        <div class="version">v{{ version }}</div>
       </mat-menu>
     </mat-toolbar>
   `,
@@ -87,12 +90,21 @@ import { AppBarService } from './app-bar.service'
       .spacer {
         flex: 1 1 auto;
       }
+      mat-divider {
+        margin-top: 0.5rem;
+      }
+      .version {
+        padding: 0.75rem 1rem 0.25rem;
+        font-size: 0.65rem;
+        text-align: right;
+      }
     `,
   ],
 })
 export class AppBarComponent {
   public isLightTheme = false
   public birthdaysToday$ = this.birthdaysService.hasBirthdaysToday$
+  public version = environment.version
 
   constructor(
     private authService: AuthService,
