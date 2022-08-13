@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { BirthdayItem, ProxyRequest } from 'pks-common'
-import { differenceInDays, parse, isSameDay, setYear } from 'date-fns'
+import { differenceInDays, isSameDay, setYear, parseISO } from 'date-fns'
 import { StoreKeys } from '../../../constants/constants'
 import { Store } from '../../../utils/store'
 import { ApiRoutes } from '../../shared/services/api-routes'
@@ -52,7 +52,7 @@ export class BirthdaysService extends Store<BirthdaysState> {
       this.fetchBirthdays()
     } else {
       const parsed = JSON.parse(stored) as StoredBirthdays
-      if (differenceInDays(new Date(), parse(parsed.lastFetch)) > 6) {
+      if (differenceInDays(new Date(), parseISO(parsed.lastFetch)) > 6) {
         this.fetchBirthdays()
       } else {
         this.checkBirthdays(parsed.birthdays)

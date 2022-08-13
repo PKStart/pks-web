@@ -39,6 +39,7 @@ export class ApiService {
   }
 
   public async getAsync<T>(path: string, options: RequestOptions = defaultOptions): Promise<T> {
+    // @ts-ignore
     return this.get<T>(path, options).toPromise()
   }
 
@@ -56,6 +57,7 @@ export class ApiService {
     data: Q,
     options: RequestOptions = defaultOptions
   ): Promise<T> {
+    // @ts-ignore
     return this.post<Q, T>(path, data, options).toPromise()
   }
 
@@ -69,6 +71,7 @@ export class ApiService {
     data: Q,
     options: RequestOptions = defaultOptions
   ): Promise<T> {
+    // @ts-ignore
     return this.put<Q, T>(path, data, options).toPromise()
   }
 
@@ -87,6 +90,7 @@ export class ApiService {
     data: Q,
     options: RequestOptions = defaultOptions
   ): Promise<T> {
+    // @ts-ignore
     return this.delete<Q, T>(path, data, options).toPromise()
   }
 

@@ -30,7 +30,7 @@ import { WeatherService } from './weather.service'
           svgIcon="tempLowWarning"
         ></mat-icon>
         <span class="temperature">{{ weather.temperature }}&deg;C</span>
-        <mat-icon class="weather-icon" [svgIcon]="weather.icon ?? ''"></mat-icon>
+        <mat-icon class="weather-icon" [svgIcon]="weather.icon"></mat-icon>
       </ng-container>
     </button>
   `,

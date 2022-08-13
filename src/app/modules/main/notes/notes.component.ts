@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { Note, UUID } from 'pks-common'
-import { parse } from 'date-fns'
+import { parseISO } from 'date-fns'
 import { Subscription } from 'rxjs'
 import { filter, map, switchMap } from 'rxjs/operators'
 import { defaultDialogConfig } from '../../../constants/constants'
@@ -76,7 +76,11 @@ export class NotesComponent implements OnDestroy {
     this.subscription.add(
       notesService.notes$.subscribe(notes => {
         this.notes = notes
-          .sort((a, b) => parse(b.createdAt).getTime() - parse(a.createdAt).getTime())
+          .sort(
+            (a, b) =>
+              parseISO(b.createdAt as unknown as string).getTime() -
+              parseISO(a.createdAt as unknown as string).getTime()
+          )
           .sort((a, b) => (a.pinned === b.pinned ? 0 : a.pinned ? -1 : 1))
           .sort((a, b) => (a.archived === b.archived ? 0 : a.archived ? 1 : -1))
       })

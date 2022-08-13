@@ -24,7 +24,7 @@ environments.forEach((env) => {
   const content = `
 export const environment = {
   production: ${isProd},
-  version: ${version},
+  version: '${version}',
 ${variableList}
 }
   `;

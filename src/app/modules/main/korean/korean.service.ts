@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { KoreanDictItem, ProxyRequest } from 'pks-common'
-import { differenceInDays, parse } from 'date-fns'
+import { differenceInDays, parseISO } from 'date-fns'
 import { StoreKeys } from '../../../constants/constants'
 import { Store } from '../../../utils/store'
 import { ApiRoutes } from '../../shared/services/api-routes'
@@ -51,7 +51,7 @@ export class KoreanService extends Store<KoreanState> {
       this.fetchWordlist()
     } else {
       const parsed = JSON.parse(stored) as StoredWordList
-      if (differenceInDays(new Date(), parse(parsed.lastFetch)) > 6) {
+      if (differenceInDays(new Date(), parseISO(parsed.lastFetch)) > 6) {
         this.fetchWordlist()
       } else {
         this.createLists(parsed.items)
