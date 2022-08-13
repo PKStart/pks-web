@@ -19,7 +19,7 @@ export function transformWeather(res: WeatherResponse): Weather {
     alerts: res.alerts?.map(a => a.description) ?? [],
   }
   const daily: DailyWeather[] = res.daily.map(day => ({
-    dayOfWeek: format(new Date(day.dt * 1000), 'dddd'),
+    dayOfWeek: format(new Date(day.dt * 1000), 'EEEE'),
     date: format(new Date(day.dt * 1000), 'MMMM d.'),
     wind: getWindScale(day.wind_speed),
     description: capitalize(day.weather[0].description),

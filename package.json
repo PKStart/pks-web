@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "npm run setenv && ng serve",
+    "start:prod": "npm run setenv && ng serve --configuration production",
     "build": "npm run setenv && ng build",
     "watch": "npm run setenv && ng build --watch --configuration development",
     "lint": "ng lint",
