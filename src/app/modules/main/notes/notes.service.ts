@@ -14,6 +14,7 @@ import { Store } from '../../../utils/store'
 import { ApiRoutes } from '../../shared/services/api-routes'
 import { ApiService } from '../../shared/services/api.service'
 import { NotificationService } from '../../shared/services/notification.service'
+import { LocalApiService } from '../../shared/services/local-api.service'
 
 interface NotesState {
   notes: Note[]
@@ -27,9 +28,14 @@ const initialState: NotesState = {
 
 @Injectable({ providedIn: 'root' })
 export class NotesService extends Store<NotesState> {
-  constructor(private apiService: ApiService, private notificationService: NotificationService) {
+  constructor(
+    private apiService: ApiService,
+    private localApiService: LocalApiService,
+    private notificationService: NotificationService
+  ) {
     super(initialState)
     this.fetchNotes()
+    this.testLocalApi()
   }
 
   public notes$ = this.select(state => state.notes)
@@ -46,6 +52,20 @@ export class NotesService extends Store<NotesState> {
       },
       error: err => {
         this.notificationService.showError('Could not fetch notes. ' + err.message)
+        this.setState({ loading: false })
+      },
+    })
+  }
+
+  public testLocalApi(): void {
+    this.setState({ loading: true })
+    console.log('testing local api')
+    this.localApiService.get('/linux/mpr/current-profile').subscribe({
+      next: res => {
+        console.log('local api call', res)
+      },
+      error: err => {
+        this.notificationService.showError('Could not call local api. ' + err.message)
         this.setState({ loading: false })
       },
     })

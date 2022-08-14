@@ -25,6 +25,7 @@ jobs:
         run: npm run build
         env:
           PK_API_URL_PROD: ${{ secrets.PROD_API_URL }}
+          PK_LOCAL_API_URL_PROD: ${{ secrets.PROD_LOCAL_API_URL }}
 
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.1.0

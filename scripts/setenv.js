@@ -1,38 +1,37 @@
-const { writeFile, readFileSync } = require("fs");
-const { resolve } = require("path");
-require("dotenv").config({ path: ".env" });
+const { writeFile, readFileSync } = require('fs')
+const { resolve } = require('path')
+require('dotenv').config({ path: '.env' })
 
+const environments = ['DEV', 'PROD']
 
-const environments = ["DEV", "PROD"];
-
-const variables = ["PK_API_URL"];
+const variables = ['PK_API_URL', 'PK_LOCAL_API_URL']
 
 const paths = {
-  DEV: "./src/environments/environment.ts",
-  PROD: "./src/environments/environment.prod.ts",
-};
+  DEV: './src/environments/environment.ts',
+  PROD: './src/environments/environment.prod.ts',
+}
 
 const packageJson = readFileSync(resolve(__dirname, '..', 'package.json'))
 const version = JSON.parse(packageJson).version
 
-environments.forEach((env) => {
-  const isProd = env === "PROD";
-  let variableList = "";
-  variables.forEach((key) => {
-    variableList += `  ${key}: '${process.env[key + "_" + env]}',\n`;
-  });
+environments.forEach(env => {
+  const isProd = env === 'PROD'
+  let variableList = ''
+  variables.forEach(key => {
+    variableList += `  ${key}: '${process.env[key + '_' + env]}',\n`
+  })
   const content = `
 export const environment = {
   production: ${isProd},
   version: '${version}',
 ${variableList}
 }
-  `;
-  writeFile(paths[env], content, (err) => {
+  `
+  writeFile(paths[env], content, err => {
     if (err) {
-      console.log(`[setenv] Error while setting frontend ${env} environment variables:`, err);
+      console.log(`[setenv] Error while setting frontend ${env} environment variables:`, err)
       return
     }
-    console.log(`[setenv] Wrote ${env} environment variables to ${paths[env]}`);
-  });
-});
+    console.log(`[setenv] Wrote ${env} environment variables to ${paths[env]}`)
+  })
+})

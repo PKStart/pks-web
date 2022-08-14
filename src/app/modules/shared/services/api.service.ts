@@ -29,7 +29,7 @@ const defaultOptions: RequestOptions = {
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private readonly apiUrl = environment.PK_API_URL
+  private apiUrl = environment.PK_API_URL
 
   constructor(private http: HttpClient, private auth: AuthStore) {}
 
@@ -111,5 +111,9 @@ export class ApiService {
     } else {
       options.headers['Authorization'] = `Bearer ${token}`
     }
+  }
+
+  protected setApiUrl(url: string): void {
+    this.apiUrl = url
   }
 }
