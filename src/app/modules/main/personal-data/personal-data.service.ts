@@ -57,10 +57,10 @@ export class PersonalDataService extends Store<PersonalDataState> {
     return this.apiService
       .post<CreatePersonalDataRequest, PersonalDataIdResponse>(ApiRoutes.PERSONAL_DATA, request)
       .pipe(
-        tap(
-          () => this.setState({ loading: false }),
-          () => this.setState({ loading: false })
-        )
+        tap({
+          next: () => this.setState({ loading: false }),
+          error: () => this.setState({ loading: false }),
+        })
       )
   }
 
@@ -71,10 +71,10 @@ export class PersonalDataService extends Store<PersonalDataState> {
     return this.apiService
       .put<UpdatePersonalDataRequest, PersonalDataIdResponse>(ApiRoutes.PERSONAL_DATA, request)
       .pipe(
-        tap(
-          () => this.setState({ loading: false }),
-          () => this.setState({ loading: false })
-        )
+        tap({
+          next: () => this.setState({ loading: false }),
+          error: () => this.setState({ loading: false }),
+        })
       )
   }
 
@@ -85,10 +85,10 @@ export class PersonalDataService extends Store<PersonalDataState> {
         id,
       })
       .pipe(
-        tap(
-          () => this.setState({ loading: false }),
-          () => this.setState({ loading: false })
-        )
+        tap({
+          next: () => this.setState({ loading: false }),
+          error: () => this.setState({ loading: false }),
+        })
       )
   }
 }

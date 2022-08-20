@@ -54,10 +54,10 @@ export class NotesService extends Store<NotesState> {
   public createNote(note: CreateNoteRequest): Observable<NoteIdResponse> {
     this.setState({ loading: true })
     return this.apiService.post<CreateNoteRequest, NoteIdResponse>(ApiRoutes.NOTES, note).pipe(
-      tap(
-        () => this.setState({ loading: false }),
-        () => this.setState({ loading: false })
-      )
+      tap({
+        next: () => this.setState({ loading: false }),
+        error: () => this.setState({ loading: false }),
+      })
     )
   }
 
@@ -65,20 +65,20 @@ export class NotesService extends Store<NotesState> {
     this.setState({ loading: true })
     const request: UpdateNoteRequest = omit(note, ['createdAt', 'userId'])
     return this.apiService.put<UpdateNoteRequest, NoteIdResponse>(ApiRoutes.NOTES, request).pipe(
-      tap(
-        () => this.setState({ loading: false }),
-        () => this.setState({ loading: false })
-      )
+      tap({
+        next: () => this.setState({ loading: false }),
+        error: () => this.setState({ loading: false }),
+      })
     )
   }
 
   public deleteNote(id: UUID): Observable<NoteIdResponse> {
     this.setState({ loading: true })
     return this.apiService.delete<DeleteNoteRequest, NoteIdResponse>(ApiRoutes.NOTES, { id }).pipe(
-      tap(
-        () => this.setState({ loading: false }),
-        () => this.setState({ loading: false })
-      )
+      tap({
+        next: () => this.setState({ loading: false }),
+        error: () => this.setState({ loading: false }),
+      })
     )
   }
 }

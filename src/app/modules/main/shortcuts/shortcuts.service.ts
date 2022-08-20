@@ -72,10 +72,10 @@ export class ShortcutsService extends Store<ShortcutState> {
     return this.apiService
       .post<CreateShortcutRequest, ShortcutIdResponse>(ApiRoutes.SHORTCUTS, request)
       .pipe(
-        tap(
-          () => this.setState({ loading: false }),
-          () => this.setState({ loading: false })
-        )
+        tap({
+          next: () => this.setState({ loading: false }),
+          error: () => this.setState({ loading: false }),
+        })
       )
   }
 
@@ -84,10 +84,10 @@ export class ShortcutsService extends Store<ShortcutState> {
     return this.apiService
       .put<UpdateShortcutRequest, ShortcutIdResponse>(ApiRoutes.SHORTCUTS, request)
       .pipe(
-        tap(
-          () => this.setState({ loading: false }),
-          () => this.setState({ loading: false })
-        )
+        tap({
+          next: () => this.setState({ loading: false }),
+          error: () => this.setState({ loading: false }),
+        })
       )
   }
 
@@ -96,10 +96,10 @@ export class ShortcutsService extends Store<ShortcutState> {
     return this.apiService
       .delete<DeleteShortcutRequest, ShortcutIdResponse>(ApiRoutes.SHORTCUTS, { id })
       .pipe(
-        tap(
-          () => this.setState({ loading: false }),
-          () => this.setState({ loading: false })
-        )
+        tap({
+          next: () => this.setState({ loading: false }),
+          error: () => this.setState({ loading: false }),
+        })
       )
   }
 }
