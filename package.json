@@ -5,6 +5,7 @@
   "description": "Web Frontend for PKStart",
   "scripts": {
     "ng": "ng",
+    "update:common": "npm install git+https://github.com/PKStart/pks-common.git",
     "start": "npm run setenv && ng serve",
     "start:prod": "npm run setenv && ng serve --configuration production",
     "build": "npm run setenv && ng build",

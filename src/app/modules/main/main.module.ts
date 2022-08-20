@@ -5,12 +5,14 @@ import { BirthdaysComponent } from './birthdays/birthdays.component'
 import { KoreanComponent } from './korean/korean.component'
 import { MainComponent } from './main.component'
 import { AppBarComponent } from './app-bar/app-bar.component'
+import { MouseProfilesComponent } from './mouse-profiles/mouse-profiles.component'
 import { NoteCardComponent } from './notes/note-card.component'
 import { NoteDialogComponent } from './notes/note-dialog.component'
 import { NotesComponent } from './notes/notes.component'
 import { PersonalDataCardComponent } from './personal-data/personal-data-card.component'
 import { PersonalDataDialogComponent } from './personal-data/personal-data-dialog.component'
 import { PersonalDataComponent } from './personal-data/personal-data.component'
+import { ProfileChipComponent } from './mouse-profiles/profile-chip.component'
 import { SettingsDialogComponent } from './settings/settings-dialog.component'
 import { ShortcutDialogComponent } from './shortcuts/shortcut-dialog.component'
 import { ShortcutComponent } from './shortcuts/shortcut.component'
@@ -33,6 +35,7 @@ import { WeatherComponent } from './weather/weather.component'
     CurrentWeatherComponent,
     DailyWeatherComponent,
     HourlyWeatherComponent,
+    MouseProfilesComponent,
     NotesComponent,
     NoteCardComponent,
     NoteDialogComponent,
@@ -46,6 +49,7 @@ import { WeatherComponent } from './weather/weather.component'
     PersonalDataComponent,
     PersonalDataDialogComponent,
     PersonalDataCardComponent,
+    ProfileChipComponent,
     KoreanComponent,
   ],
   providers: [],

@@ -20,6 +20,14 @@ import { environment } from '../../../../environments/environment'
       ></pk-app-bar-weather>
       <button
         mat-icon-button
+        matTooltip="Mouse profiles"
+        *ngIf="(appBarService.mouseOpen$ | async) === false"
+        (click)="appBarService.toggleMouse()"
+      >
+        <mat-icon>mouse</mat-icon>
+      </button>
+      <button
+        mat-icon-button
         matTooltip="Notes"
         *ngIf="(appBarService.notesOpen$ | async) === false"
         (click)="appBarService.toggleNotes()"

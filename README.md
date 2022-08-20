@@ -9,9 +9,7 @@ Types, interfaces and utils common to all PKStart applications are stored in the
 ```shell
 npm install git+https://github.com/PKStart/pks-common.git
 ```
-Make sure to reinstall and update this package whenever the common code changes.
-
-- [ ] TODO: create npm script for safe updates
+Make sure to reinstall and update this package whenever the common code changes. Use the `npm run update:common` command for this.
 
 ### Environment variables
 Since Angular uses its own logic of handling the environments, a little 'hack' was needed to achieve using a `.env` file.

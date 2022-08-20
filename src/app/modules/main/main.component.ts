@@ -7,15 +7,22 @@ import { AppBarService } from './app-bar/app-bar.service'
     <pk-app-bar></pk-app-bar>
     <div class="main-content">
       <div class="main-left">
-        <pk-notes *ngIf="appBarService.notesOpen$ | async"></pk-notes>
-      </div>
-      <div class="main-center">
-        <pk-personal-data *ngIf="appBarService.personalDataOpen$ | async"></pk-personal-data>
-        <pk-korean *ngIf="appBarService.koreanOpen$ | async"></pk-korean>
-        <pk-birthdays *ngIf="appBarService.birthdaysOpen$ | async"></pk-birthdays>
+        <div class="column col-1">
+          <pk-notes *ngIf="appBarService.notesOpen$ | async"></pk-notes>
+        </div>
+        <div class="column col-2">
+          <pk-mouse-profiles *ngIf="appBarService.mouseOpen$ | async"></pk-mouse-profiles>
+        </div>
       </div>
       <div class="main-right">
-        <pk-weather *ngIf="appBarService.weatherOpen$ | async"></pk-weather>
+        <div class="column col-3">
+          <pk-personal-data *ngIf="appBarService.personalDataOpen$ | async"></pk-personal-data>
+          <pk-korean *ngIf="appBarService.koreanOpen$ | async"></pk-korean>
+          <pk-birthdays *ngIf="appBarService.birthdaysOpen$ | async"></pk-birthdays>
+        </div>
+        <div class="column col-4">
+          <pk-weather *ngIf="appBarService.weatherOpen$ | async"></pk-weather>
+        </div>
       </div>
     </div>
     <pk-shortcuts></pk-shortcuts>
@@ -28,29 +35,30 @@ import { AppBarService } from './app-bar/app-bar.service'
         height: calc(100% - 64px - 58px);
         display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
         gap: 1rem;
         overflow-y: auto;
         padding: 1rem;
+        // TODO Create a proper responsive layout (grid?)
+
+        .main-left,
+        .main-right {
+          width: auto;
+          max-height: 100vh;
+          display: block;
+        }
 
         @media (min-width: 1200px) {
           height: calc(100% - 64px);
         }
 
-        > div {
-          width: auto;
-          height: auto;
-          max-height: 100%;
-        }
-
-        .main-center {
-          flex: 1 1 auto;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          align-items: flex-end;
-          gap: 1rem;
-          max-height: calc(100% - 58px);
-          overflow-y: auto;
+        @media (min-width: 1770px) {
+          .main-right,
+          .main-left {
+            max-height: 100%;
+            display: flex;
+            gap: 1rem;
+          }
         }
       }
     `,
