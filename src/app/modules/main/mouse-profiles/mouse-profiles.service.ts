@@ -57,9 +57,13 @@ export class MouseProfilesService extends Store<MouseProfilesState> {
       },
       error: err => {
         this.notificationService.showError(
-          'Could not fetch mouse profiles. ' + err?.error?.message ?? err.message
+          'Could not fetch mouse profiles. ' + (err?.error?.message ?? err?.message)
         )
         this.setState({ loading: false, disabled: true })
+        if (this.timer) {
+          clearInterval(this.timer)
+          this.timer = undefined
+        }
       },
     })
   }
@@ -79,7 +83,7 @@ export class MouseProfilesService extends Store<MouseProfilesState> {
           }),
         error: err => {
           this.notificationService.showError(
-            'Could not change mouse profile. ' + err?.error?.message ?? err.message
+            'Could not change mouse profile. ' + (err?.error?.message ?? err.message)
           )
           this.setState({ loading: false, disabled: true })
         },

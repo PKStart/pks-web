@@ -16,7 +16,7 @@ import { MouseProfilesService } from './mouse-profiles.service'
           matTooltip="Sync profiles"
           matTooltipPosition="left"
           (click)="refetch()"
-          [disabled]="(loading$ | async) || (disabled$ | async)"
+          [disabled]="loading$ | async"
         >
           <mat-icon>sync</mat-icon>
         </button>
