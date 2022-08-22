@@ -1,14 +1,13 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms'
+import { UrlRegex } from 'pks-common'
 
 export class CustomValidators {
   static url(control: AbstractControl): ValidationErrors | null {
-    const format =
-      /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@%{}!\$&'\(\)\*\+,;=.]+$/
     if (
       !control.value ||
       (typeof control.value === 'string' &&
         control.value !== '' &&
-        format.test(control.value.trim()))
+        UrlRegex.test(control.value.trim()))
     ) {
       return null
     }
