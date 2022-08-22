@@ -15,7 +15,7 @@
     "format": "prettier --write  \"src/**/*.{ts,scss,html,json}\"",
     "setenv": "node scripts/setenv.js",
     "test:watch": "ng test",
-    "test": "ng test --watch=false",
+    "test": "ng test --browsers=ChromeHeadless --watch=false",
     "prepare": "husky install"
   },
   "dependencies": {
