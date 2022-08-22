@@ -2,7 +2,8 @@ import { AbstractControl, ValidationErrors } from '@angular/forms'
 
 export class CustomValidators {
   static url(control: AbstractControl): ValidationErrors | null {
-    const format = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
+    const format =
+      /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@%{}!\$&'\(\)\*\+,;=.]+$/
     if (
       !control.value ||
       (typeof control.value === 'string' &&
