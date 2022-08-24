@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http'
 import { Store } from '../../../utils/store'
 import { SettingsStore } from '../../shared/services/settings.store'
 import { NotificationService } from '../../shared/services/notification.service'
-import { LocationIqResponse, Weather, WeatherResponse } from './weather.types'
-import { transformWeather } from './weather.utils'
+import { LocationIqResponse, SavedLocationInfo, Weather, WeatherResponse } from './weather.types'
+import { isSimilarLocation, transformWeather } from './weather.utils'
+import { StoreKeys } from '../../../constants/constants'
 
 export interface WeatherState {
   location: string
@@ -65,6 +66,12 @@ export class WeatherService extends Store<WeatherState> {
 
   private getLocation(coords: GeolocationCoordinates): void {
     if (!this.locationApiKey) return
+    const savedLocationForCoordinates: LocationIqResponse | null =
+      this.getSavedLocationForCoords(coords)
+    if (savedLocationForCoordinates) {
+      this.onGetLocation(savedLocationForCoordinates, coords)
+      return
+    }
     this.http
       .get<LocationIqResponse>('https://eu1.locationiq.com/v1/reverse.php', {
         params: {
@@ -84,6 +91,7 @@ export class WeatherService extends Store<WeatherState> {
 
   private onGetLocation(location: LocationIqResponse, coords: GeolocationCoordinates): void {
     this.setState({ loading: false })
+    this.saveLocationForCoords(location, coords)
     this.coords = coords
     this.setState({
       location:
@@ -122,5 +130,20 @@ export class WeatherService extends Store<WeatherState> {
   private setFetchTimer(): void {
     if (this.fetchTimer) clearInterval(this.fetchTimer)
     this.fetchTimer = setInterval(() => this.fetchWeather(), 1000 * 60 * 60)
+  }
+
+  private getSavedLocationForCoords(coords: GeolocationCoordinates): LocationIqResponse | null {
+    const savedLocationInfo = localStorage.getItem(StoreKeys.LOCATION)
+    if (!savedLocationInfo) return null
+    const { location, coords: savedCoords } = JSON.parse(savedLocationInfo) as SavedLocationInfo
+    return isSimilarLocation(coords, savedCoords) ? location : null
+  }
+
+  private saveLocationForCoords(
+    location: LocationIqResponse,
+    geoCoords: GeolocationCoordinates
+  ): void {
+    const coords = { latitude: geoCoords.latitude, longitude: geoCoords.longitude }
+    localStorage.setItem(StoreKeys.LOCATION, JSON.stringify({ location, coords }))
   }
 }

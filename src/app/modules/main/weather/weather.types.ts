@@ -102,3 +102,8 @@ export interface LocationIqResponse {
     district?: string
   }
 }
+
+export interface SavedLocationInfo {
+  location: LocationIqResponse
+  coords: GeolocationCoordinates
+}

@@ -70,6 +70,7 @@ export class AuthService {
     this.unscheduleTokenRefresh()
     localStorage.removeItem(StoreKeys.BIRTHDAYS)
     localStorage.removeItem(StoreKeys.KOREAN)
+    localStorage.removeItem(StoreKeys.LOCATION)
   }
 
   public autoLogin(): void {

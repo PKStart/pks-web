@@ -8,6 +8,7 @@ export enum StoreKeys {
   APP_BAR = 'pk-start-app-bar',
   BIRTHDAYS = 'pk-start-birthdays',
   KOREAN = 'pk-start-korean',
+  LOCATION = 'pk-start-location',
 }
 
 export const defaultDialogConfig: MatDialogConfig = {
