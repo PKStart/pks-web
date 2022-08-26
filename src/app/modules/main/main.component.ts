@@ -10,16 +10,18 @@ import { AppBarService } from './app-bar/app-bar.service'
         <div class="column col-1">
           <pk-notes *ngIf="appBarService.notesOpen$ | async"></pk-notes>
         </div>
+      </div>
+      <div class="main-middle">
         <div class="column col-2">
           <pk-mouse-profiles *ngIf="appBarService.mouseOpen$ | async"></pk-mouse-profiles>
         </div>
-      </div>
-      <div class="main-right">
         <div class="column col-3">
           <pk-personal-data *ngIf="appBarService.personalDataOpen$ | async"></pk-personal-data>
           <pk-korean *ngIf="appBarService.koreanOpen$ | async"></pk-korean>
           <pk-birthdays *ngIf="appBarService.birthdaysOpen$ | async"></pk-birthdays>
         </div>
+      </div>
+      <div class="main-right">
         <div class="column col-4">
           <pk-weather *ngIf="appBarService.weatherOpen$ | async"></pk-weather>
         </div>
@@ -39,7 +41,6 @@ import { AppBarService } from './app-bar/app-bar.service'
         gap: 1rem;
         overflow-y: auto;
         padding: 1rem;
-        // TODO Create a proper responsive layout (grid?)
 
         .main-left,
         .main-right {
@@ -57,6 +58,12 @@ import { AppBarService } from './app-bar/app-bar.service'
           .main-left {
             max-height: 100%;
             display: flex;
+            gap: 1rem;
+          }
+          .main-middle {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
             gap: 1rem;
           }
         }

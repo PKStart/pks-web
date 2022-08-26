@@ -14,7 +14,7 @@ import { NoteToggleEvent } from './notes.types'
 
 @Component({
   selector: 'pk-notes',
-  template: ` <div class="main-box">
+  template: ` <div class="main-box" [class.max-size]="notes.length > 4">
     <header class="main-box-header">
       <h1 class="main-box-title">Notes</h1>
       <div class="main-box-actions">
@@ -52,6 +52,13 @@ import { NoteToggleEvent } from './notes.types'
   </div>`,
   styles: [
     `
+      .main-box {
+        max-height: 900px;
+
+        &.max-size {
+          height: calc(100vh - 64px - 3rem);
+        }
+      }
       .notes {
         display: flex;
         flex-direction: column;
