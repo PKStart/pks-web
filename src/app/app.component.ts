@@ -16,8 +16,10 @@ export class AppComponent {
     private notificationService: NotificationService
   ) {
     this.sendWakeupCall()
+    // Testing Fly.io server, if the backend doesn't sleep, don't need this call
+    // TODO Remove code if obsolete thanks to new server
     // Send wakeup calls to the API because Heroku free dyno goes to sleep after 30 minutes of inactivity
-    setInterval(() => this.sendWakeupCall(), 1000 * 60 * 29)
+    // setInterval(() => this.sendWakeupCall(), 1000 * 60 * 29)
     authService.autoLogin()
   }
 
