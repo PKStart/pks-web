@@ -126,7 +126,7 @@ describe('Weather Utils', () => {
       expect(daily[2].tempMax).toBe(29)
       expect(hourly).toBeInstanceOf(Array)
       expect(hourly).toHaveSize(24)
-      expect(hourly[5].time).toBe('1AM')
+      expect(hourly[5].time).toMatch(new RegExp(/\d\d?[A|P]M/))
       expect(hourly[5].description).toBe('Overcast clouds')
       expect(hourly[5].wind).toBe('Light breeze')
       expect(hourly[5].precipitation).toBe(undefined)
