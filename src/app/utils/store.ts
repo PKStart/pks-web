@@ -21,11 +21,7 @@ export class Store<T> {
 
   protected setState(newState: Partial<T>): void {
     if (Array.isArray(newState) && Array.isArray(this.state)) {
-      if (newState.length === 0) {
-        this.state$.next([] as unknown as T)
-      } else {
-        this.state$.next([...this.state, ...newState] as unknown as T)
-      }
+      this.state$.next([...newState] as unknown as T)
     } else if (newState instanceof Object) {
       this.state$.next({
         ...this.state,
