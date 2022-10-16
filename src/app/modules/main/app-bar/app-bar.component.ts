@@ -3,7 +3,7 @@ import { LIGHT_THEME_CLASS } from '../../../constants/constants'
 import { AuthService } from '../../auth/auth.service'
 import { BirthdaysService } from '../birthdays/birthdays.service'
 import { DataBackupService } from '../data-backup/data-backup.service'
-import { SettingsService } from '../settings/settings-service'
+import { SettingsService } from '../settings/settings.service'
 import { AppBarService } from './app-bar.service'
 import { environment } from '../../../../environments/environment'
 
