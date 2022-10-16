@@ -9,6 +9,7 @@ export interface AppBarState {
   koreanOpen: boolean
   personalDataOpen: boolean
   mouseOpen: boolean
+  cyclingOpen: boolean
 }
 
 const initialState: AppBarState = {
@@ -18,6 +19,7 @@ const initialState: AppBarState = {
   weatherOpen: false,
   personalDataOpen: false,
   mouseOpen: false,
+  cyclingOpen: false,
 }
 
 @Injectable({ providedIn: 'root' })
@@ -32,6 +34,7 @@ export class AppBarService extends LocalStore<AppBarState> {
   public personalDataOpen$ = this.select(state => state.personalDataOpen)
   public koreanOpen$ = this.select(state => state.koreanOpen)
   public mouseOpen$ = this.select(state => state.mouseOpen)
+  public cyclingOpen$ = this.select(state => state.cyclingOpen)
 
   public toggleWeather(): void {
     this.setState({ weatherOpen: !this.state.weatherOpen })
@@ -55,6 +58,10 @@ export class AppBarService extends LocalStore<AppBarState> {
 
   public toggleMouse(): void {
     this.setState({ mouseOpen: !this.state.mouseOpen })
+  }
+
+  public toggleCycling(): void {
+    this.setState({ cyclingOpen: !this.state.cyclingOpen })
   }
 
   public resetState(): void {

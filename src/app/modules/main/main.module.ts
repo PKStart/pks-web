@@ -23,9 +23,10 @@ import { CurrentWeatherComponent } from './weather/current-weather.component'
 import { DailyWeatherComponent } from './weather/daily-weather.component'
 import { HourlyWeatherComponent } from './weather/hourly-weather.component'
 import { WeatherComponent } from './weather/weather.component'
+import { CyclingModule } from './cycling/cycling.module'
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [SharedModule, CyclingModule],
   exports: [],
   declarations: [
     MainComponent,

@@ -30,6 +30,18 @@ import { CustomValidators } from '../../../utils/validators'
           <mat-label>Korean Google Sheet URL</mat-label>
           <input formControlName="koreanUrl" matInput type="text" />
         </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Strava Client ID</mat-label>
+          <input formControlName="stravaClientId" matInput type="text" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Strava Client Secret</mat-label>
+          <input formControlName="stravaClientSecret" matInput type="text" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Strava OAuth redirect URL</mat-label>
+          <input formControlName="stravaRedirectUri" matInput type="text" />
+        </mat-form-field>
       </form>
     </div>
     <div mat-dialog-actions>
@@ -61,6 +73,9 @@ export class SettingsDialogComponent {
       shortcutIconBaseUrl: [data.shortcutIconBaseUrl, CustomValidators.url],
       birthdaysUrl: [data.birthdaysUrl, CustomValidators.url],
       koreanUrl: [data.koreanUrl, CustomValidators.url],
+      stravaClientId: [data.stravaClientId],
+      stravaClientSecret: [data.stravaClientSecret],
+      stravaRedirectUri: [data.stravaRedirectUri],
     })
   }
 

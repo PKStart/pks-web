@@ -14,6 +14,7 @@ import { AppBarService } from './app-bar/app-bar.service'
       <div class="main-middle">
         <div class="column col-2">
           <pk-mouse-profiles *ngIf="appBarService.mouseOpen$ | async"></pk-mouse-profiles>
+          <pk-cycling *ngIf="appBarService.cyclingOpen$ | async"></pk-cycling>
         </div>
         <div class="column col-3">
           <pk-personal-data *ngIf="appBarService.personalDataOpen$ | async"></pk-personal-data>

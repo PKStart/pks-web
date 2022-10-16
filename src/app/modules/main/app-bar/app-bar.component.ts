@@ -28,6 +28,14 @@ import { environment } from '../../../../environments/environment'
       </button>
       <button
         mat-icon-button
+        matTooltip="Cycling"
+        *ngIf="(appBarService.cyclingOpen$ | async) === false"
+        (click)="appBarService.toggleCycling()"
+      >
+        <mat-icon>directions_bike</mat-icon>
+      </button>
+      <button
+        mat-icon-button
         matTooltip="Notes"
         *ngIf="(appBarService.notesOpen$ | async) === false"
         (click)="appBarService.toggleNotes()"

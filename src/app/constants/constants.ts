@@ -9,6 +9,8 @@ export enum StoreKeys {
   BIRTHDAYS = 'pk-start-birthdays',
   KOREAN = 'pk-start-korean',
   LOCATION = 'pk-start-location',
+  CYCLING = 'pk-start-cycling',
+  STRAVA_AUTH = 'pk-start-strava-auth',
 }
 
 export const defaultDialogConfig: MatDialogConfig = {

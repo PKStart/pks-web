@@ -10,6 +10,9 @@ const initialState: UserSettings = {
   locationApiKey: null,
   birthdaysUrl: null,
   koreanUrl: null,
+  stravaClientId: null,
+  stravaClientSecret: null,
+  stravaRedirectUri: null,
 }
 
 @Injectable({ providedIn: 'root' })
@@ -23,6 +26,16 @@ export class SettingsStore extends LocalStore<UserSettings> {
       return {
         weatherApiKey: state.weatherApiKey,
         locationApiKey: state.locationApiKey,
+      }
+    })
+  }
+
+  public get stravaSettings(): Observable<Partial<UserSettings>> {
+    return this.select(state => {
+      return {
+        stravaClientId: state.stravaClientId,
+        stravaClientSecret: state.stravaClientSecret,
+        stravaRedirectUri: state.stravaRedirectUri,
       }
     })
   }
