@@ -5,7 +5,6 @@ import {
   StravaRideStats,
   StravaRideStatsResponse,
 } from './cycling.types'
-import { startOfWeek } from 'date-fns'
 
 export function metersToKms(meters: number): number {
   return Math.round(meters / 100) / 10
@@ -42,52 +41,27 @@ export function getPrimaryBikeData(bikes: StravaBikeDataResponse[]): StravaBikeD
   return convertBikeData(primaryBike)
 }
 
-export function getMonthAndWeekStats(allActivities: StravaActivityResponse[]): {
-  thisWeek: StravaRideStats
-  thisMonth: StravaRideStats
-} {
-  const rides = allActivities.filter(({ sport_type }) =>
+export function getStats(activities: StravaActivityResponse[]): StravaRideStats {
+  const rides = activities.filter(({ sport_type }) =>
     ['Ride', 'MountainBikeRide', 'VirtualRide', 'EBikeRide'].includes(sport_type)
   )
-  const thisMonthBase: StravaRideStats = {
+  const statsBase: StravaRideStats = {
     activityCount: rides.length,
     movingTime: 0,
     elevationGain: 0,
     distance: 0,
   }
-  const thisMonth = rides.reduce((acc, { total_elevation_gain, moving_time, distance }) => {
+  const stats = rides.reduce((acc, { total_elevation_gain, moving_time, distance }) => {
     return {
       ...acc,
       movingTime: acc.movingTime + moving_time,
       distance: acc.distance + distance,
       elevationGain: acc.elevationGain + Math.floor(total_elevation_gain),
     }
-  }, thisMonthBase)
+  }, statsBase)
 
-  thisMonth.distance = metersToKms(thisMonth.distance)
-  thisMonth.movingTime = secondsToHours(thisMonth.movingTime)
+  stats.distance = metersToKms(stats.distance)
+  stats.movingTime = secondsToHours(stats.movingTime)
 
-  const startOfThisWeek = startOfWeek(new Date(), { weekStartsOn: 1 })
-  const ridesThisWeek = rides.filter(({ start_date }) => new Date(start_date) > startOfThisWeek)
-  const thisWeekBase: StravaRideStats = {
-    activityCount: ridesThisWeek.length,
-    movingTime: 0,
-    elevationGain: 0,
-    distance: 0,
-  }
-  const thisWeek = ridesThisWeek.reduce((acc, { total_elevation_gain, moving_time, distance }) => {
-    return {
-      ...acc,
-      movingTime: acc.movingTime + moving_time,
-      distance: acc.distance + distance,
-      elevationGain: acc.elevationGain + Math.floor(total_elevation_gain),
-    }
-  }, thisWeekBase)
-
-  thisWeek.distance = metersToKms(thisWeek.distance)
-  thisWeek.movingTime = secondsToHours(thisWeek.movingTime)
-  return {
-    thisMonth,
-    thisWeek,
-  }
+  return stats
 }

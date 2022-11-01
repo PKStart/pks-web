@@ -9,12 +9,8 @@ import {
   StravaAthleteResponse,
   StravaAthleteStatsResponse,
 } from './cycling.types'
-import {
-  convertRideStats,
-  getMonthAndWeekStats,
-  getPrimaryBikeData,
-  metersToKms,
-} from './cycling.utils'
+import { convertRideStats, getPrimaryBikeData, getStats, metersToKms } from './cycling.utils'
+import { startOfWeek } from 'date-fns'
 
 interface StravaApiState {
   loading: boolean
@@ -47,7 +43,6 @@ export class StravaApiService extends Store<StravaApiState> {
       .pipe(
         tap({
           next: res => {
-            console.log({ athlete: res })
             newData.id = res.id
             newData.primaryBike = getPrimaryBikeData(res.bikes)
           },
@@ -64,7 +59,6 @@ export class StravaApiService extends Store<StravaApiState> {
         }),
         tap({
           next: res => {
-            console.log({ stats: res })
             newData.longestRideEver = metersToKms(res.biggest_ride_distance)
             newData.allRideTotals = convertRideStats(res.all_ride_totals)
             newData.ytdRideTotals = convertRideStats(res.ytd_ride_totals)
@@ -77,12 +71,12 @@ export class StravaApiService extends Store<StravaApiState> {
         }),
         switchMap(() => {
           const nowDate = new Date()
-          const startOfMonth = Math.floor(
+          const monthStart = Math.floor(
             new Date(nowDate.getFullYear(), nowDate.getMonth(), 1).getTime() / 1000
           )
           const now = Math.floor(nowDate.getTime() / 1000)
           return this.http.get<StravaActivityResponse[]>(
-            `${this.stravaApiBaseUrl}/athlete/activities?per_page=100&after=${startOfMonth}&before=${now}`,
+            `${this.stravaApiBaseUrl}/athlete/activities?per_page=100&after=${monthStart}&before=${now}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -90,17 +84,41 @@ export class StravaApiService extends Store<StravaApiState> {
         }),
         tap({
           next: res => {
-            console.log({ activities: res })
-            const { thisWeek, thisMonth } = getMonthAndWeekStats(res)
-            newData.thisWeek = thisWeek
-            newData.thisMonth = thisMonth
+            newData.thisMonth = getStats(res)
           },
           error: () => {
-            this.notificationService.showError('Could not fetch Athlete activities from Strava')
+            this.notificationService.showError(
+              'Could not fetch Athlete month activities from Strava'
+            )
+            this.setState({ loading: false })
+          },
+        }),
+        switchMap(() => {
+          const nowDate = new Date()
+          const weekStart = Math.floor(
+            startOfWeek(new Date(), { weekStartsOn: 1 }).getTime() / 1000
+          )
+          const now = Math.floor(nowDate.getTime() / 1000)
+          return this.http.get<StravaActivityResponse[]>(
+            `${this.stravaApiBaseUrl}/athlete/activities?per_page=100&after=${weekStart}&before=${now}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          )
+        }),
+        tap({
+          next: res => {
+            newData.thisWeek = getStats(res)
+          },
+          error: () => {
+            this.notificationService.showError(
+              'Could not fetch Athlete week activities from Strava'
+            )
             this.setState({ loading: false })
           },
         }),
         tap(() => {
+          console.log({ stravaAthleteData: newData })
           this.setState({ loading: false, data: newData as StravaAthleteData })
         })
       )
