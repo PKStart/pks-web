@@ -11,6 +11,10 @@ export enum ApiRoutes {
   PERSONAL_DATA = '/personal-data',
   PROXY_BIRTHDAYS = '/proxy/birthdays',
   PROXY_KOREAN = '/proxy/korean',
+  CYCLING = '/cycling',
+  CYCLING_WEEKLY_GOAL = '/cycling/weekly-goal',
+  CYCLING_MONTHLY_GOAL = '/cycling/monthly-goal',
+  CYCLING_CHORE = '/cycling/chore',
   WAKEUP = '/wakeup',
 }
 
@@ -31,4 +35,8 @@ export const authenticatedApiRoutes = [
   ApiRoutes.PERSONAL_DATA,
   ApiRoutes.PROXY_BIRTHDAYS,
   ApiRoutes.PROXY_KOREAN,
+  ApiRoutes.CYCLING,
+  ApiRoutes.CYCLING_CHORE,
+  ApiRoutes.CYCLING_MONTHLY_GOAL,
+  ApiRoutes.CYCLING_WEEKLY_GOAL,
 ]

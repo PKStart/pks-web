@@ -74,3 +74,5 @@ export interface StravaAthleteData {
   thisWeek: StravaRideStats
   thisMonth: StravaRideStats
 }
+
+export type CyclingWidget = 'stats' | 'goals' | 'chores'

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { StravaRideStats } from './cycling.types'
+import { StravaRideStats } from '../cycling.types'
 
 @Component({
   selector: 'pk-stats-table',

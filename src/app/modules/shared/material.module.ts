@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input'
 import { MatMenuModule } from '@angular/material/menu'
 import { MatRadioModule } from '@angular/material/radio'
 import { MatSelectModule } from '@angular/material/select'
+import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatSliderModule } from '@angular/material/slider'
 import { MatSnackBarModule } from '@angular/material/snack-bar'
@@ -62,6 +63,7 @@ import {
     MatDialogModule,
     MatCheckboxModule,
     MatInputModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSliderModule,
   ],
@@ -85,6 +87,7 @@ import {
     MatDialogModule,
     MatCheckboxModule,
     MatInputModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSliderModule,
   ],
