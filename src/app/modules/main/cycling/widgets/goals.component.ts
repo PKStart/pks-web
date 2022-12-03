@@ -22,10 +22,13 @@ import { Component, Input } from '@angular/core'
         <p>
           Monthly goal: <b>{{ monthTotal }} / {{ monthlyGoal }}</b> km
         </p>
-        <mat-progress-bar
-          [color]="monthTotal >= monthlyGoal ? 'primary' : 'accent'"
-          [value]="monthTotal / (monthlyGoal / 100)"
-        ></mat-progress-bar>
+        <div class="progress-bar-line">
+          <mat-progress-bar
+            [color]="monthTotal >= monthlyGoal ? 'primary' : 'accent'"
+            [value]="monthTotal / (monthlyGoal / 100)"
+          ></mat-progress-bar>
+          <mat-icon *ngIf="monthTotal >= monthlyGoal" color="primary">check</mat-icon>
+        </div>
       </mat-card-content>
     </mat-card>
   `,
