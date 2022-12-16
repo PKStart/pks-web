@@ -4,6 +4,7 @@ export interface ShortcutsByCategory {
   [ShortcutCategory.TOP]: Shortcut[]
   [ShortcutCategory.CODING]: Shortcut[]
   [ShortcutCategory.GOOGLE]: Shortcut[]
+  [ShortcutCategory.CYCLING]: Shortcut[]
   [ShortcutCategory.FUN]: Shortcut[]
   [ShortcutCategory.OTHERS]: Shortcut[]
 }

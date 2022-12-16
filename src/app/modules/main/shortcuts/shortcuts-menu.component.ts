@@ -31,6 +31,13 @@ import { ShortcutsService } from './shortcuts.service'
           <mat-icon svgIcon="google" class="google"></mat-icon>
         </button>
         <button
+          (click)="clickMenu.emit(category.CYCLING)"
+          (mouseenter)="enterMenu.emit(category.CYCLING)"
+          (mouseleave)="mouseLeave.emit()"
+        >
+          <mat-icon>directions_bike</mat-icon>
+        </button>
+        <button
           (click)="clickMenu.emit(category.FUN)"
           (mouseenter)="enterMenu.emit(category.FUN)"
           (mouseleave)="mouseLeave.emit()"
@@ -58,7 +65,7 @@ import { ShortcutsService } from './shortcuts.service'
     // language=scss
     `
       .shortcuts-menu {
-        width: 318px;
+        width: 378px;
         height: 58px;
         position: absolute;
         bottom: 0;

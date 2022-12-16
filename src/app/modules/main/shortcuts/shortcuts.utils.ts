@@ -10,6 +10,7 @@ export function distributeShortcuts(shortcuts: Shortcut[]): {
     [ShortcutCategory.TOP]: [],
     [ShortcutCategory.CODING]: [],
     [ShortcutCategory.GOOGLE]: [],
+    [ShortcutCategory.CYCLING]: [],
     [ShortcutCategory.FUN]: [],
     [ShortcutCategory.OTHERS]: [],
   }
