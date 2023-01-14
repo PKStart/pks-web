@@ -16,6 +16,8 @@ export enum WeatherIcons {
 export const HIGH_TEMP_WARNING_THRESHOLD = 26
 export const LOW_TEMP_WARNING_THRESHOLD = 8
 
+export const TODAY_FORMAT = 'EEEE, yyyy MMMM d'
+
 export interface BaseWeather {
   description: string
   icon: WeatherIcons

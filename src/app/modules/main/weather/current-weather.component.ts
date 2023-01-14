@@ -7,6 +7,7 @@ import {
   DailyWeather,
   LOW_TEMP_WARNING_THRESHOLD,
   HIGH_TEMP_WARNING_THRESHOLD,
+  TODAY_FORMAT,
 } from './weather.types'
 
 @Component({
@@ -156,7 +157,7 @@ export class CurrentWeatherComponent implements OnDestroy {
   }
   public loading$ = this.weatherService.loading$
   public location = ''
-  public today = format(new Date(), 'EEEE, yyyy MMMM d')
+  public today = format(new Date(), TODAY_FORMAT)
   public current: CurrentWeather | undefined
   public daily: DailyWeather[] = []
   private subscription = new Subscription()
@@ -172,6 +173,7 @@ export class CurrentWeatherComponent implements OnDestroy {
         if (!weather) return
         this.current = weather.current
         this.daily = weather.daily
+        this.today = format(new Date(), TODAY_FORMAT)
       })
     )
   }
