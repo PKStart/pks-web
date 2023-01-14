@@ -6,6 +6,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { LocationIqResponse, SavedLocationInfo, Weather, WeatherResponse } from './weather.types'
 import { isSimilarLocation, transformWeather } from './weather.utils'
 import { StoreKeys } from '../../../constants/constants'
+import { DatetimeStore } from '../../shared/services/datetime.store'
 
 export interface WeatherState {
   location: string
@@ -40,6 +41,7 @@ export class WeatherService extends Store<WeatherState> {
 
   constructor(
     private http: HttpClient,
+    private datetimeStore: DatetimeStore,
     private settingsStore: SettingsStore,
     private notificationService: NotificationService
   ) {
@@ -62,6 +64,7 @@ export class WeatherService extends Store<WeatherState> {
   public refetchWeather(): void {
     this.fetchWeather()
     this.setFetchTimer()
+    this.datetimeStore.updateToday()
   }
 
   private getLocation(coords: GeolocationCoordinates): void {

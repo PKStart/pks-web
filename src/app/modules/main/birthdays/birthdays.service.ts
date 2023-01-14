@@ -7,6 +7,8 @@ import { ApiRoutes } from '../../shared/services/api-routes'
 import { ApiService } from '../../shared/services/api.service'
 import { NotificationService } from '../../shared/services/notification.service'
 import { SettingsStore } from '../../shared/services/settings.store'
+import { DatetimeStore } from '../../shared/services/datetime.store'
+import { filter, tap } from 'rxjs/operators'
 
 interface BirthdaysState {
   hasBirthdaysToday: number | undefined
@@ -39,6 +41,7 @@ export class BirthdaysService extends Store<BirthdaysState> {
 
   constructor(
     private apiService: ApiService,
+    private datetimeStore: DatetimeStore,
     private settingsStore: SettingsStore,
     private notificationService: NotificationService
   ) {
@@ -47,17 +50,24 @@ export class BirthdaysService extends Store<BirthdaysState> {
       this.setState({ disabled: true })
       return
     }
-    const stored = localStorage.getItem(StoreKeys.BIRTHDAYS)
-    if (!stored) {
-      this.fetchBirthdays()
-    } else {
-      const parsed = JSON.parse(stored) as StoredBirthdays
-      if (differenceInDays(new Date(), parseISO(parsed.lastFetch)) > 6) {
-        this.fetchBirthdays()
-      } else {
-        this.checkBirthdays(parsed.birthdays)
-      }
-    }
+    this.datetimeStore.today$
+      .pipe(
+        filter(value => Boolean(value)),
+        tap(() => {
+          const stored = localStorage.getItem(StoreKeys.BIRTHDAYS)
+          if (!stored) {
+            this.fetchBirthdays()
+          } else {
+            const parsed = JSON.parse(stored) as StoredBirthdays
+            if (differenceInDays(new Date(), parseISO(parsed.lastFetch)) > 6) {
+              this.fetchBirthdays()
+            } else {
+              this.checkBirthdays(parsed.birthdays)
+            }
+          }
+        })
+      )
+      .subscribe()
   }
 
   public fetchBirthdays(): void {
