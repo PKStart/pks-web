@@ -39,7 +39,7 @@ export interface StravaAthleteStatsResponse {
   recent_ride_totals: StravaRideStatsResponse
 }
 
-export type SportType = 'Ride' | 'MountainBikeRide' | 'VirtualRide' | 'EBikeRide'
+export type SportType = 'Ride' | 'MountainBikeRide' | 'VirtualRide' | 'EBikeRide' | 'GravelRide'
 
 export interface StravaActivityResponse {
   distance: number // meters

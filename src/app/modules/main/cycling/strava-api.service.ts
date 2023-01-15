@@ -118,7 +118,6 @@ export class StravaApiService extends Store<StravaApiState> {
           },
         }),
         tap(() => {
-          console.log({ stravaAthleteData: newData })
           this.setState({ loading: false, data: newData as StravaAthleteData })
         })
       )

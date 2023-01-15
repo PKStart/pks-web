@@ -43,7 +43,7 @@ export function getPrimaryBikeData(bikes: StravaBikeDataResponse[]): StravaBikeD
 
 export function getStats(activities: StravaActivityResponse[]): StravaRideStats {
   const rides = activities.filter(({ sport_type }) =>
-    ['Ride', 'MountainBikeRide', 'VirtualRide', 'EBikeRide'].includes(sport_type)
+    ['Ride', 'MountainBikeRide', 'VirtualRide', 'EBikeRide', 'GravelRide'].includes(sport_type)
   )
   const statsBase: StravaRideStats = {
     activityCount: rides.length,
