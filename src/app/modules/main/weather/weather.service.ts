@@ -96,10 +96,11 @@ export class WeatherService extends Store<WeatherState> {
     this.setState({ loading: false })
     this.saveLocationForCoords(location, coords)
     this.coords = coords
-    this.setState({
-      location:
-        location.address.city + (location.address.district ? `, ${location.address.district}` : ''),
-    })
+    const { city, district, country, town, village, region, state } = location.address
+    const locationText = city
+      ? city + (district ? `, ${district}` : '')
+      : village ?? town ?? state ?? region ?? country ?? 'Unknown location :('
+    this.setState({ location: locationText })
     this.fetchWeather()
     this.setFetchTimer()
   }

@@ -100,8 +100,13 @@ export interface WeatherData {
 
 export interface LocationIqResponse {
   address: {
-    city: string
+    village?: string
+    town?: string
+    city?: string
     district?: string
+    region?: string
+    state?: string
+    country?: string
   }
 }
 
