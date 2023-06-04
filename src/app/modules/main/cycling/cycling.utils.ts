@@ -34,7 +34,9 @@ export function convertBikeData(res: StravaBikeDataResponse): StravaBikeData {
 }
 
 export function getPrimaryBikeData(bikes: StravaBikeDataResponse[]): StravaBikeData {
-  const primaryBike = bikes.find(({ primary }) => primary)
+  // Strava removed the primary flag, temporary solution to match by name
+  // TODO handle saving primary bike on the backend
+  const primaryBike = bikes.find(({ name }) => name === 'Giant FastRoad SL 3')
   if (!primaryBike) {
     throw new Error('No primary bike found on Strava')
   }
