@@ -12,6 +12,7 @@ import { defaultDialogConfig } from '../../../constants/constants'
 import { MonthlyGoalDialogComponent } from './dialogs/monthly-goal-dialog.component'
 import { ChoreDialogComponent } from './dialogs/chore-dialog.component'
 import { ConfirmationService } from '../../shared/services/confirmation.service'
+import { environment } from '../../../../environments/environment'
 
 @Component({
   selector: 'pk-cycling',
@@ -57,7 +58,19 @@ import { ConfirmationService } from '../../shared/services/confirmation.service'
         <ng-container *ngIf="(loading$ | async) === false && (disabled$ | async) === false">
           <mat-card *ngIf="needAuth$ | async">
             <mat-card-content>
-              <a mat-raised-button color="accent" [href]="stravaOauthUrl">Log in to Strava</a>
+              <a
+                *ngIf="!stravaLogosEnabled"
+                mat-raised-button
+                color="accent"
+                [href]="stravaOauthUrl"
+                >Log in to Strava</a
+              >
+              <a *ngIf="stravaLogosEnabled" [href]="stravaOauthUrl">
+                <img
+                  src="/assets/strava/btn_strava_connectwith_orange.png"
+                  alt="Connect With Strava"
+                />
+              </a>
             </mat-card-content>
           </mat-card>
           <ng-container *ngIf="(needAuth$ | async) === false">
@@ -88,6 +101,12 @@ import { ConfirmationService } from '../../shared/services/confirmation.service'
             </div>
           </ng-container>
         </ng-container>
+        <div *ngIf="stravaLogosEnabled" class="powered-by-strava">
+          <img
+            src="/assets/strava/api_logo_pwrdBy_strava_horiz_white.png"
+            alt="Powered by Strava"
+          />
+        </div>
       </main>
     </div>
   `,
@@ -111,6 +130,12 @@ import { ConfirmationService } from '../../shared/services/confirmation.service'
         align-items: center;
         justify-content: center;
       }
+
+      .powered-by-strava {
+        display: flex;
+        justify-content: center;
+        padding-top: 8px;
+      }
     `,
   ],
 })
@@ -129,6 +154,7 @@ export class CyclingComponent implements OnInit, OnDestroy {
   public stravaOauthUrl = this.cyclingService.stravaOauthUrl
   public stravaData!: StravaAthleteData
   public cyclingData!: Cycling
+  public stravaLogosEnabled = environment.PK_STRAVA_LOGOS === 'enabled'
 
   private subscription = new Subscription()
 

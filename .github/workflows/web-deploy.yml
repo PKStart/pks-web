@@ -26,6 +26,7 @@ jobs:
         env:
           PK_API_URL_PROD: ${{ secrets.PROD_API_URL }}
           PK_LOCAL_API_URL_PROD: ${{ secrets.PROD_LOCAL_API_URL }}
+          PK_STRAVA_LOGOS_PROD: ${{ secrets.PROD_STRAVA_LOGOS }}
 
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.1.0

@@ -4,7 +4,7 @@ require('dotenv').config({ path: '.env' })
 
 const environments = ['DEV', 'PROD']
 
-const variables = ['PK_API_URL', 'PK_LOCAL_API_URL']
+const variables = ['PK_API_URL', 'PK_LOCAL_API_URL', 'PK_STRAVA_LOGOS']
 
 const paths = {
   DEV: './src/environments/environment.ts',
