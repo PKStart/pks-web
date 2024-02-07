@@ -16,7 +16,7 @@ import { WeatherService } from './weather.service'
             [matTooltip]="updatedText"
             matTooltipPosition="left"
             (click)="refetch()"
-            [disabled]="(loading$ | async) || (disabled$ | async)"
+            [disabled]="(loading$ | async) || ((disabled$ | async) ?? true)"
           >
             <mat-icon>sync</mat-icon>
           </button>
@@ -48,7 +48,8 @@ export class WeatherComponent implements OnDestroy {
   public disabled$ = this.weatherService.disabled$
 
   private updatedMinutes = 0
-  private updatedTimer = 0
+  // @ts-ignore
+  private updatedTimer: NodeJS.Timer | number = 0
   private subscription = new Subscription()
 
   constructor(private weatherService: WeatherService, public appBarService: AppBarService) {

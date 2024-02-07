@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, ViewChild } from '@angular/core'
 import { MatMenuTrigger } from '@angular/material/menu'
-import { ShortcutCategory } from 'pks-common'
+import { ShortcutCategory } from '../../../constants/enums'
 import { ShortcutsService } from './shortcuts.service'
 
 @Component({

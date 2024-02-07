@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
-import { Note } from 'pks-common'
+import { Note } from '@kinpeter/pk-common'
 import { CustomValidators } from '../../../utils/validators'
 
 @Component({
@@ -97,7 +97,7 @@ export class NoteDialogComponent {
   public onSave(): void {
     this.dialogRef.close({
       text: this.form.value.text || undefined,
-      links: this.form.value.links.length ? this.form.value.links : undefined,
+      links: this.form.value.links.length ? this.form.value.links : [],
       pinned: this.data ? this.data.pinned : false,
       archived: this.data ? this.data.archived : false,
     })

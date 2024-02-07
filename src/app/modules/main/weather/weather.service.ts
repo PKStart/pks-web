@@ -7,6 +7,7 @@ import { LocationIqResponse, SavedLocationInfo, Weather, WeatherResponse } from 
 import { isSimilarLocation, transformWeather } from './weather.utils'
 import { StoreKeys } from '../../../constants/constants'
 import { DatetimeStore } from '../../shared/services/datetime.store'
+import { parseError } from '../../../utils/parse-error'
 
 export interface WeatherState {
   location: string
@@ -32,7 +33,8 @@ export class WeatherService extends Store<WeatherState> {
   private locationApiKey: string | null = null
   private weatherApiKey: string | null = null
   private coords: GeolocationCoordinates | undefined
-  private fetchTimer = 0
+  // @ts-ignore
+  private fetchTimer: NodeJS.Timer | number = 0
 
   public location$ = this.select(state => state.location)
   public weather$ = this.select(state => state.weather)
@@ -121,7 +123,7 @@ export class WeatherService extends Store<WeatherState> {
       .subscribe({
         next: (res: WeatherResponse) => this.onGetWeather(res),
         error: err => {
-          this.notificationService.showError('Could not get weather: ' + err.message)
+          this.notificationService.showError('Could not get weather: ' + parseError(err))
           this.setState({ loading: false })
         },
       })

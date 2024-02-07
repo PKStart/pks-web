@@ -4,10 +4,10 @@ PKStart Web
 Running the Web Frontend 
 ------------------------
 
-### Common code in the `pks-common` repository
-Types, interfaces and utils common to all PKStart applications are stored in the `pks-common` [repository](https://github.com/PKStart/pks-common). The code is added to each app's repo as an NPM package directly from Github by the following command:
+### Common code in the `pk-central` repository
+Types, interfaces and utils common to some of my applications are stored in the `pk-central` [repository](https://github.com/KinPeter/pk-central). The code is added to each app's repo as an NPM package called `@kinpeter/pk-common` by the following command:
 ```shell
-npm install git+https://github.com/PKStart/pks-common.git
+npm run update:common
 ```
 Make sure to reinstall and update this package whenever the common code changes. Use the `npm run update:common` command for this.
 

@@ -38,11 +38,6 @@ export class ApiService {
     return this.http.get<T>(`${this.apiUrl}${path}`, options)
   }
 
-  public async getAsync<T>(path: string, options: RequestOptions = defaultOptions): Promise<T> {
-    // @ts-ignore
-    return this.get<T>(path, options).toPromise()
-  }
-
   public post<Q, T>(
     path: string,
     data: Q,
@@ -52,46 +47,23 @@ export class ApiService {
     return this.http.post<T>(`${this.apiUrl}${path}`, data, options)
   }
 
-  public async postAsync<Q, T>(
-    path: string,
-    data: Q,
-    options: RequestOptions = defaultOptions
-  ): Promise<T> {
-    // @ts-ignore
-    return this.post<Q, T>(path, data, options).toPromise()
-  }
-
   public put<Q, T>(path: string, data: Q, options: RequestOptions = defaultOptions): Observable<T> {
     this.setAuthorization(options)
     return this.http.put<T>(`${this.apiUrl}${path}`, data, options)
   }
 
-  public async putAsync<Q, T>(
-    path: string,
-    data: Q,
-    options: RequestOptions = defaultOptions
-  ): Promise<T> {
-    // @ts-ignore
-    return this.put<Q, T>(path, data, options).toPromise()
-  }
-
-  public delete<Q, T>(
+  public patch<Q, T>(
     path: string,
     data: Q,
     options: RequestOptions = defaultOptions
   ): Observable<T> {
     this.setAuthorization(options)
-    options.body = data || undefined
-    return this.http.delete<T>(`${this.apiUrl}${path}`, options)
+    return this.http.patch<T>(`${this.apiUrl}${path}`, data, options)
   }
 
-  public async deleteAsync<Q, T>(
-    path: string,
-    data: Q,
-    options: RequestOptions = defaultOptions
-  ): Promise<T> {
-    // @ts-ignore
-    return this.delete<Q, T>(path, data, options).toPromise()
+  public delete<T>(path: string, options: RequestOptions = defaultOptions): Observable<T> {
+    this.setAuthorization(options)
+    return this.http.delete<T>(`${this.apiUrl}${path}`, options)
   }
 
   private setAuthorization(options: RequestOptions): void {

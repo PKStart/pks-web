@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
-import { LoginResponse, TokenResponse, UUID } from 'pks-common'
+import { AuthData, UUID } from '@kinpeter/pk-common'
 import { StoreKeys } from '../../constants/constants'
 import { LocalStore } from '../../utils/store'
 
 export interface AuthState {
   id: UUID | null
   email: string | null
-  name: string | null
   token: string | null
-  expiresAt: Date | null
+  expiresAt: Date | string | null
   isAuth: boolean
 }
 
 const initialState: AuthState = {
   id: null,
   email: null,
-  name: null,
   expiresAt: null,
   token: null,
   isAuth: false,
@@ -43,11 +41,10 @@ export class AuthStore extends LocalStore<AuthState> {
     this.setState({ email })
   }
 
-  public setLogin(res: LoginResponse): void {
+  public setLogin(res: AuthData): void {
     this.setState({
       id: res.id,
       email: res.email,
-      name: res.name,
       token: res.token,
       expiresAt: res.expiresAt,
       isAuth: true,
@@ -58,14 +55,13 @@ export class AuthStore extends LocalStore<AuthState> {
     this.setState({
       id: null,
       email: null,
-      name: null,
       token: null,
       expiresAt: null,
       isAuth: false,
     })
   }
 
-  public setNewToken({ token, expiresAt }: TokenResponse): void {
+  public setNewToken({ token, expiresAt }: AuthData): void {
     this.setState({ token, expiresAt })
   }
 }

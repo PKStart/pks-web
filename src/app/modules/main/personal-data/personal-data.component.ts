@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
-import { PersonalData, UUID } from 'pks-common'
-import { fromEvent, Subscription } from 'rxjs'
+import { PersonalData, UUID } from '@kinpeter/pk-common'
+import { fromEvent, of, Subscription } from 'rxjs'
 import { debounceTime, delay, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators'
 import { defaultDialogConfig } from '../../../constants/constants'
 import { omit } from '../../../utils/objects'
@@ -10,6 +10,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { AppBarService } from '../app-bar/app-bar.service'
 import { PersonalDataDialogComponent } from './personal-data-dialog.component'
 import { PersonalDataService } from './personal-data.service'
+import { parseError } from '../../../utils/parse-error'
 
 @Component({
   selector: 'pk-personal-data',
@@ -23,7 +24,7 @@ import { PersonalDataService } from './personal-data.service'
             matTooltip="Add new"
             matTooltipPosition="left"
             (click)="onAdd()"
-            [disabled]="loading$ | async"
+            [disabled]="(loading$ | async) ?? true"
           >
             <mat-icon>post_add</mat-icon>
           </button>
@@ -70,7 +71,14 @@ import { PersonalDataService } from './personal-data.service'
   ],
 })
 export class PersonalDataComponent implements OnDestroy {
-  @ViewChild('searchInput') input!: ElementRef<HTMLInputElement>
+  private _input: ElementRef<HTMLInputElement> | undefined
+
+  @ViewChild('searchInput')
+  set input(value: ElementRef<HTMLInputElement> | undefined) {
+    if (value) {
+      this._input = value
+    }
+  }
 
   public loading$ = this.personalDataService.loading$
   public data: PersonalData[] = []
@@ -96,7 +104,12 @@ export class PersonalDataComponent implements OnDestroy {
         .pipe(
           filter(loading => !loading),
           delay(500),
-          switchMap(() => fromEvent(this.input.nativeElement, 'input')),
+          switchMap(() => {
+            if (this._input) {
+              return fromEvent(this._input.nativeElement, 'input')
+            }
+            return of(null)
+          }),
           distinctUntilChanged(),
           debounceTime(500)
         )
@@ -119,7 +132,7 @@ export class PersonalDataComponent implements OnDestroy {
       .subscribe({
         next: () => this.personalDataService.fetchData(),
         error: e =>
-          this.notificationService.showError('Could not create document. ' + e.error.message),
+          this.notificationService.showError('Could not create document. ' + parseError(e)),
       })
   }
 
@@ -138,12 +151,12 @@ export class PersonalDataComponent implements OnDestroy {
           id,
           ...omit(value, ['userId', 'createdAt']),
         })),
-        switchMap(value => this.personalDataService.updatePersonalData(value))
+        switchMap(value => this.personalDataService.updatePersonalData(value, id))
       )
       .subscribe({
         next: () => this.personalDataService.fetchData(),
         error: e =>
-          this.notificationService.showError('Could not update document. ' + e.error.message),
+          this.notificationService.showError('Could not update document. ' + parseError(e)),
       })
   }
 
@@ -159,12 +172,12 @@ export class PersonalDataComponent implements OnDestroy {
       .subscribe({
         next: () => this.personalDataService.fetchData(),
         error: e =>
-          this.notificationService.showError('Could not delete document. ' + e.error.message),
+          this.notificationService.showError('Could not delete document. ' + parseError(e)),
       })
   }
 
   public onSearch(): void {
-    const value = this.input.nativeElement.value
+    const value = this._input?.nativeElement.value
     if (!value) {
       this.results = []
     } else if (value === 'all') {

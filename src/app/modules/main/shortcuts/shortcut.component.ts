@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core'
 import { MatMenuTrigger } from '@angular/material/menu'
-import { Shortcut, UUID } from 'pks-common'
+import { Shortcut, UUID } from '@kinpeter/pk-common'
 import { SettingsStore } from '../../shared/services/settings.store'
 
 @Component({

@@ -2,7 +2,7 @@ import { LocalStore } from '../../../utils/store'
 import { StoreKeys } from '../../../constants/constants'
 import { HttpClient } from '@angular/common/http'
 import { NotificationService } from '../../shared/services/notification.service'
-import { UserSettings } from 'pks-common'
+import { PkStartSettings } from '@kinpeter/pk-common'
 import { SettingsStore } from '../../shared/services/settings.store'
 import { StravaAuthResponse } from './cycling.types'
 import { Observable, of } from 'rxjs'
@@ -34,7 +34,7 @@ export class StravaAuthService extends LocalStore<StravaAuthState> {
   private readonly stravaAuthBaseUrl = 'https://www.strava.com/oauth/authorize'
   private readonly stravaAuthTokenUrl = 'https://www.strava.com/oauth/token'
 
-  private stravaSettings: Partial<UserSettings> | undefined
+  private stravaSettings: Partial<PkStartSettings> | undefined
 
   constructor(
     private http: HttpClient,

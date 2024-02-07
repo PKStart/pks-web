@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core'
-import { Note, UUID } from 'pks-common'
+import { Note, UUID } from '@kinpeter/pk-common'
 import { NoteToggleEvent } from './notes.types'
 
 @Component({

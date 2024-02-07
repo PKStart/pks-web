@@ -12,11 +12,12 @@ import {
   SetMonthlyGoalRequest,
   SetWeeklyGoalRequest,
   UUID,
-} from 'pks-common'
+} from '@kinpeter/pk-common'
 import { ApiService } from '../../shared/services/api.service'
 import { ApiRoutes } from '../../shared/services/api-routes'
 import { NotificationService } from '../../shared/services/notification.service'
 import { CyclingWidget } from './cycling.types'
+import { parseError } from '../../../utils/parse-error'
 
 interface CyclingState {
   loading: boolean
@@ -96,7 +97,7 @@ export class CyclingService extends LocalStore<CyclingState> {
         })
       },
       error: err => {
-        this.notificationService.showError('Could not fetch cycling data. ' + err.message)
+        this.notificationService.showError('Could not fetch cycling data. ' + parseError(err))
         this.setState({ loading: false })
       },
     })
@@ -105,7 +106,7 @@ export class CyclingService extends LocalStore<CyclingState> {
   public setWeeklyGoal(goal: number): void {
     this.setState({ loading: true })
     this.apiService
-      .put<SetWeeklyGoalRequest, Cycling>(ApiRoutes.CYCLING_WEEKLY_GOAL, { weeklyGoal: goal })
+      .patch<SetWeeklyGoalRequest, Cycling>(ApiRoutes.CYCLING_WEEKLY_GOAL, { weeklyGoal: goal })
       .subscribe({
         next: res => {
           this.setState({
@@ -115,7 +116,7 @@ export class CyclingService extends LocalStore<CyclingState> {
           this.notificationService.showSuccess('New weekly goal set!')
         },
         error: err => {
-          this.notificationService.showError('Could not update weekly goal. ' + err.message)
+          this.notificationService.showError('Could not update weekly goal. ' + parseError(err))
           this.setState({ loading: false })
         },
       })
@@ -124,7 +125,7 @@ export class CyclingService extends LocalStore<CyclingState> {
   public setMonthlyGoal(goal: number): void {
     this.setState({ loading: true })
     this.apiService
-      .put<SetMonthlyGoalRequest, Cycling>(ApiRoutes.CYCLING_MONTHLY_GOAL, { monthlyGoal: goal })
+      .patch<SetMonthlyGoalRequest, Cycling>(ApiRoutes.CYCLING_MONTHLY_GOAL, { monthlyGoal: goal })
       .subscribe({
         next: res => {
           this.setState({
@@ -134,7 +135,7 @@ export class CyclingService extends LocalStore<CyclingState> {
           this.notificationService.showSuccess('New monthly goal set!')
         },
         error: err => {
-          this.notificationService.showError('Could not update monthly goal. ' + err.message)
+          this.notificationService.showError('Could not update monthly goal. ' + parseError(err))
           this.setState({ loading: false })
         },
       })
@@ -151,7 +152,7 @@ export class CyclingService extends LocalStore<CyclingState> {
         this.notificationService.showSuccess('New chore added!')
       },
       error: err => {
-        this.notificationService.showError('Could not add new cycling chore. ' + err.message)
+        this.notificationService.showError('Could not add new cycling chore. ' + parseError(err))
         this.setState({ loading: false })
       },
     })
@@ -170,7 +171,7 @@ export class CyclingService extends LocalStore<CyclingState> {
           this.notificationService.showSuccess('Chore updated!')
         },
         error: err => {
-          this.notificationService.showError('Could not update cycling chore. ' + err.message)
+          this.notificationService.showError('Could not update cycling chore. ' + parseError(err))
           this.setState({ loading: false })
         },
       })
@@ -178,7 +179,7 @@ export class CyclingService extends LocalStore<CyclingState> {
 
   public deleteChore(id: UUID): void {
     this.setState({ loading: true })
-    this.apiService.delete<null, Cycling>(`${ApiRoutes.CYCLING_CHORE}/${id}`, null).subscribe({
+    this.apiService.delete<Cycling>(`${ApiRoutes.CYCLING_CHORE}/${id}`).subscribe({
       next: res => {
         this.setState({
           cyclingData: res,
@@ -187,7 +188,7 @@ export class CyclingService extends LocalStore<CyclingState> {
         this.notificationService.showSuccess('Chore deleted!')
       },
       error: err => {
-        this.notificationService.showError('Could not delete cycling chore. ' + err.message)
+        this.notificationService.showError('Could not delete cycling chore. ' + parseError(err))
         this.setState({ loading: false })
       },
     })

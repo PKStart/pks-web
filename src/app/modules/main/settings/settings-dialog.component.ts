@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
-import { UserSettings } from 'pks-common'
+import { PkStartSettings } from '@kinpeter/pk-common'
 import { CustomValidators } from '../../../utils/validators'
 
 @Component({
@@ -10,6 +10,10 @@ import { CustomValidators } from '../../../utils/validators'
     <h1 mat-dialog-title>Settings</h1>
     <div mat-dialog-content>
       <form [formGroup]="form">
+        <mat-form-field appearance="fill">
+          <mat-label>Display name</mat-label>
+          <input formControlName="name" matInput type="text" />
+        </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>LocationIQ API key</mat-label>
           <input formControlName="locationApiKey" matInput type="text" />
@@ -63,11 +67,12 @@ export class SettingsDialogComponent {
   public form: FormGroup
 
   constructor(
-    private dialogRef: MatDialogRef<SettingsDialogComponent, UserSettings | undefined>,
+    private dialogRef: MatDialogRef<SettingsDialogComponent, PkStartSettings | undefined>,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: UserSettings
+    @Inject(MAT_DIALOG_DATA) public data: PkStartSettings
   ) {
     this.form = formBuilder.group({
+      name: [data.name],
       locationApiKey: [data.locationApiKey],
       weatherApiKey: [data.weatherApiKey],
       shortcutIconBaseUrl: [data.shortcutIconBaseUrl, CustomValidators.url],

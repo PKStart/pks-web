@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
-import { CyclingChore } from 'pks-common'
+import { CyclingChore } from '@kinpeter/pk-common'
 
 @Component({
   selector: 'pk-note-dialog',

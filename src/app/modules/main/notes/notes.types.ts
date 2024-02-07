@@ -1,4 +1,4 @@
-import { UUID } from 'pks-common'
+import { UUID } from '@kinpeter/pk-common'
 
 export interface NoteToggleEvent {
   id: UUID

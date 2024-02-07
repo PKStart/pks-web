@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core'
-import { CyclingChore, UUID } from 'pks-common'
+import { CyclingChore, UUID } from '@kinpeter/pk-common'
 import { StravaBikeData } from '../cycling.types'
 
 @Component({
