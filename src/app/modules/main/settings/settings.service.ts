@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
-import { UserSettings } from 'pks-common'
+import { PkStartSettings, PkStartSettingsRequest } from '@kinpeter/pk-common'
 import { Observable } from 'rxjs'
 import { filter, switchMap } from 'rxjs/operators'
 import { defaultDialogConfig } from '../../../constants/constants'
@@ -9,6 +9,7 @@ import { ApiService } from '../../shared/services/api.service'
 import { NotificationService } from '../../shared/services/notification.service'
 import { SettingsStore } from '../../shared/services/settings.store'
 import { SettingsDialogComponent } from './settings-dialog.component'
+import { parseError } from '../../../utils/parse-error'
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
@@ -38,12 +39,15 @@ export class SettingsService {
           this.notificationService.showSuccess('Settings have been saved')
         },
         error: err => {
-          this.notificationService.showError('Unable to save settings. ' + err.error.message)
+          this.notificationService.showError('Unable to save settings. ' + parseError(err))
         },
       })
   }
 
-  private saveSettings(settings: UserSettings): Observable<UserSettings> {
-    return this.apiService.post<UserSettings, UserSettings>(ApiRoutes.USERS_SETTINGS, settings)
+  private saveSettings(settings: PkStartSettingsRequest): Observable<PkStartSettings> {
+    return this.apiService.put<PkStartSettingsRequest, PkStartSettings>(
+      ApiRoutes.SETTINGS,
+      settings
+    )
   }
 }

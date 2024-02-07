@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
-import { PersonalData } from 'pks-common'
+import { PersonalData } from '@kinpeter/pk-common'
 
 @Component({
   selector: 'pk-personal-data-dialog',

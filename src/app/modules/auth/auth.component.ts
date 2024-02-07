@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs'
 import { NotificationService } from '../shared/services/notification.service'
 import { AuthService } from './auth.service'
 import { AuthStore } from './auth.store'
+import { parseError } from '../../utils/parse-error'
 
 @Component({
   selector: 'pk-auth',
@@ -139,7 +140,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         this.loading = false
       },
       error: err => {
-        this.notificationService.showError('Could not request login code. ' + err.error.message)
+        this.notificationService.showError('Could not request login code. ' + parseError(err))
         this.loading = false
       },
     })
@@ -148,13 +149,13 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   public onLogin(): void {
     this.loading = true
-    this.authService.login(this.loginCode).subscribe({
+    this.authService.verifyLoginCode(this.loginCode).subscribe({
       next: () => {
         this.loading = false
         this.router.navigate(['/']).then()
       },
       error: err => {
-        this.notificationService.showError('Login failed. ' + err.error.message)
+        this.notificationService.showError('Login failed. ' + parseError(err))
         this.loading = false
       },
     })

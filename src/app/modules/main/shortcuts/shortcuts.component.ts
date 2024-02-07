@@ -1,12 +1,14 @@
 import { Component } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
-import { ShortcutCategory, UUID } from 'pks-common'
+import { UUID } from '@kinpeter/pk-common'
+import { ShortcutCategory } from '../../../constants/enums'
 import { filter, switchMap } from 'rxjs/operators'
 import { defaultDialogConfig } from '../../../constants/constants'
 import { ConfirmationService } from '../../shared/services/confirmation.service'
 import { NotificationService } from '../../shared/services/notification.service'
 import { ShortcutDialogComponent } from './shortcut-dialog.component'
 import { ShortcutsService } from './shortcuts.service'
+import { parseError } from '../../../utils/parse-error'
 
 @Component({
   selector: 'pk-shortcuts',
@@ -115,7 +117,7 @@ export class ShortcutsComponent {
       .subscribe({
         next: () => this.shortcutsService.fetchShortcuts(),
         error: e =>
-          this.notificationService.showError('Could not create shortcut. ' + e.error.message),
+          this.notificationService.showError('Could not create shortcut. ' + parseError(e)),
       })
   }
 
@@ -126,12 +128,12 @@ export class ShortcutsComponent {
       .afterClosed()
       .pipe(
         filter(values => values),
-        switchMap(request => this.shortcutsService.updateShortcut({ ...request, id }))
+        switchMap(request => this.shortcutsService.updateShortcut({ ...request }, id))
       )
       .subscribe({
         next: () => this.shortcutsService.fetchShortcuts(),
         error: e =>
-          this.notificationService.showError('Could not update shortcut. ' + e.error.message),
+          this.notificationService.showError('Could not update shortcut. ' + parseError(e)),
       })
   }
 
@@ -146,7 +148,7 @@ export class ShortcutsComponent {
       .subscribe({
         next: () => this.shortcutsService.fetchShortcuts(),
         error: e =>
-          this.notificationService.showError('Could not delete shortcut. ' + e.error.message),
+          this.notificationService.showError('Could not delete shortcut. ' + parseError(e)),
       })
   }
 }

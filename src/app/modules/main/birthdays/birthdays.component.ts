@@ -14,7 +14,7 @@ import { BirthdaysService } from './birthdays.service'
             matTooltip="Sync birthdays"
             matTooltipPosition="left"
             (click)="refetch()"
-            [disabled]="(loading$ | async) || (disabled$ | async)"
+            [disabled]="(loading$ | async) || ((disabled$ | async) ?? false)"
           >
             <mat-icon>sync</mat-icon>
           </button>

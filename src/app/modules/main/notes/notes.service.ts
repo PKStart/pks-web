@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core'
-import {
-  CreateNoteRequest,
-  DeleteNoteRequest,
-  Note,
-  NoteIdResponse,
-  UpdateNoteRequest,
-  UUID,
-} from 'pks-common'
+import { NoteRequest, Note, IdObject, UUID } from '@kinpeter/pk-common'
 import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { omit } from '../../../utils/objects'
@@ -14,6 +7,7 @@ import { Store } from '../../../utils/store'
 import { ApiRoutes } from '../../shared/services/api-routes'
 import { ApiService } from '../../shared/services/api.service'
 import { NotificationService } from '../../shared/services/notification.service'
+import { parseError } from '../../../utils/parse-error'
 
 interface NotesState {
   notes: Note[]
@@ -45,15 +39,15 @@ export class NotesService extends Store<NotesState> {
         })
       },
       error: err => {
-        this.notificationService.showError('Could not fetch notes. ' + err.message)
+        this.notificationService.showError('Could not fetch notes. ' + parseError(err))
         this.setState({ loading: false })
       },
     })
   }
 
-  public createNote(note: CreateNoteRequest): Observable<NoteIdResponse> {
+  public createNote(note: NoteRequest): Observable<Note> {
     this.setState({ loading: true })
-    return this.apiService.post<CreateNoteRequest, NoteIdResponse>(ApiRoutes.NOTES, note).pipe(
+    return this.apiService.post<NoteRequest, Note>(ApiRoutes.NOTES, note).pipe(
       tap({
         next: () => this.setState({ loading: false }),
         error: () => this.setState({ loading: false }),
@@ -61,10 +55,10 @@ export class NotesService extends Store<NotesState> {
     )
   }
 
-  public updateNote(note: Note): Observable<NoteIdResponse> {
+  public updateNote(note: Note): Observable<Note> {
     this.setState({ loading: true })
-    const request: UpdateNoteRequest = omit(note, ['createdAt', 'userId'])
-    return this.apiService.put<UpdateNoteRequest, NoteIdResponse>(ApiRoutes.NOTES, request).pipe(
+    const request: NoteRequest = omit(note, ['createdAt', 'userId', 'id'])
+    return this.apiService.put<NoteRequest, Note>(ApiRoutes.NOTES + `/${note.id}`, request).pipe(
       tap({
         next: () => this.setState({ loading: false }),
         error: () => this.setState({ loading: false }),
@@ -72,9 +66,9 @@ export class NotesService extends Store<NotesState> {
     )
   }
 
-  public deleteNote(id: UUID): Observable<NoteIdResponse> {
+  public deleteNote(id: UUID): Observable<IdObject> {
     this.setState({ loading: true })
-    return this.apiService.delete<DeleteNoteRequest, NoteIdResponse>(ApiRoutes.NOTES, { id }).pipe(
+    return this.apiService.delete<IdObject>(ApiRoutes.NOTES + `/${id}`).pipe(
       tap({
         next: () => this.setState({ loading: false }),
         error: () => this.setState({ loading: false }),

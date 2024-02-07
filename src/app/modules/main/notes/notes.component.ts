@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
-import { Note, UUID } from 'pks-common'
+import { Note, UUID } from '@kinpeter/pk-common'
 import { parseISO } from 'date-fns'
 import { Subscription } from 'rxjs'
 import { filter, map, switchMap } from 'rxjs/operators'
@@ -11,6 +11,7 @@ import { AppBarService } from '../app-bar/app-bar.service'
 import { NoteDialogComponent } from './note-dialog.component'
 import { NotesService } from './notes.service'
 import { NoteToggleEvent } from './notes.types'
+import { parseError } from '../../../utils/parse-error'
 
 @Component({
   selector: 'pk-notes',
@@ -113,7 +114,7 @@ export class NotesComponent implements OnDestroy {
       )
       .subscribe({
         next: () => this.notesService.fetchNotes(),
-        error: e => this.notificationService.showError('Could not create note. ' + e.error.message),
+        error: e => this.notificationService.showError('Could not create note. ' + parseError(e)),
       })
   }
 
@@ -129,13 +130,13 @@ export class NotesComponent implements OnDestroy {
           ...note,
           ...values,
           text: values.text || null,
-          links: values?.links?.length ? values.links : null,
+          links: values?.links?.length ? values.links : [],
         })),
         switchMap(request => this.notesService.updateNote(request))
       )
       .subscribe({
         next: () => this.notesService.fetchNotes(),
-        error: e => this.notificationService.showError('Could not update note. ' + e.error.message),
+        error: e => this.notificationService.showError('Could not update note. ' + parseError(e)),
       })
   }
 
@@ -160,14 +161,14 @@ export class NotesComponent implements OnDestroy {
       )
       .subscribe({
         next: () => this.notesService.fetchNotes(),
-        error: e => this.notificationService.showError('Could not delete note. ' + e.error.message),
+        error: e => this.notificationService.showError('Could not delete note. ' + parseError(e)),
       })
   }
 
   private updateNote(note: Note): void {
     this.notesService.updateNote(note).subscribe({
       next: () => this.notesService.fetchNotes(),
-      error: e => this.notificationService.showError('Could not update note. ' + e.error.message),
+      error: e => this.notificationService.showError('Could not update note. ' + parseError(e)),
     })
   }
 }

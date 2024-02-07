@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { ChangeProfileRequest, GameProfile, MprData } from 'pks-common'
+import { ChangeProfileRequest, GameProfile, MprData } from '@kinpeter/pk-common'
 import { Store } from '../../../utils/store'
 import { NotificationService } from '../../shared/services/notification.service'
 import { LocalApiService } from '../../shared/services/local-api.service'

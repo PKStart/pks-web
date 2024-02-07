@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { BirthdayItem, ProxyRequest } from 'pks-common'
+import { BirthdayItem } from '@kinpeter/pk-common'
 import { differenceInDays, isSameDay, setYear, parseISO } from 'date-fns'
 import { StoreKeys } from '../../../constants/constants'
 import { Store } from '../../../utils/store'
@@ -9,6 +9,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { SettingsStore } from '../../shared/services/settings.store'
 import { DatetimeStore } from '../../shared/services/datetime.store'
 import { filter, tap } from 'rxjs/operators'
+import { parseError } from '../../../utils/parse-error'
 
 interface BirthdaysState {
   hasBirthdaysToday: number | undefined
@@ -46,7 +47,7 @@ export class BirthdaysService extends Store<BirthdaysState> {
     private notificationService: NotificationService
   ) {
     super(initialState)
-    if (!settingsStore.birthdaysUrl) {
+    if (!this.settingsStore.birthdaysUrl) {
       this.setState({ disabled: true })
       return
     }
@@ -75,27 +76,23 @@ export class BirthdaysService extends Store<BirthdaysState> {
       return
     }
     this.setState({ loading: true })
-    this.apiService
-      .post<ProxyRequest, BirthdayItem[]>(ApiRoutes.PROXY_BIRTHDAYS, {
-        url: this.settingsStore.birthdaysUrl as string,
-      })
-      .subscribe({
-        next: res => {
-          localStorage.setItem(
-            StoreKeys.BIRTHDAYS,
-            JSON.stringify({
-              lastFetch: new Date().toISOString(),
-              birthdays: res,
-            })
-          )
-          this.setState({ loading: false })
-          this.checkBirthdays(res)
-        },
-        error: err => {
-          this.setState({ loading: false })
-          this.notificationService.showError('Failed to fetch birthdays. ' + err.error.message)
-        },
-      })
+    this.apiService.get<BirthdayItem[]>(ApiRoutes.PROXY_BIRTHDAYS).subscribe({
+      next: res => {
+        localStorage.setItem(
+          StoreKeys.BIRTHDAYS,
+          JSON.stringify({
+            lastFetch: new Date().toISOString(),
+            birthdays: res,
+          })
+        )
+        this.setState({ loading: false })
+        this.checkBirthdays(res)
+      },
+      error: err => {
+        this.setState({ loading: false })
+        this.notificationService.showError('Failed to fetch birthdays. ' + parseError(err))
+      },
+    })
   }
 
   private checkBirthdays(birthdays: BirthdayItem[]): void {

@@ -1,11 +1,9 @@
 export enum ApiRoutes {
-  USERS = '/users',
-  USERS_SIGNUP = '/users/signup',
-  USERS_LOGIN_CODE = '/users/login-code',
-  USERS_LOGIN = '/users/login',
-  USERS_SETTINGS = '/users/settings',
-  USERS_TOKEN_REFRESH = '/users/token-refresh',
-  USERS_DATA_BACKUP = '/users/data-backup',
+  AUTH_LOGIN = '/auth/login',
+  AUTH_VERIFY_CODE = '/auth/verify-code',
+  AUTH_TOKEN_REFRESH = '/auth/token-refresh',
+  SETTINGS = '/start-settings',
+  DATA_BACKUP = '/data-backup',
   SHORTCUTS = '/shortcuts',
   NOTES = '/notes',
   PERSONAL_DATA = '/personal-data',
@@ -15,21 +13,14 @@ export enum ApiRoutes {
   CYCLING_WEEKLY_GOAL = '/cycling/weekly-goal',
   CYCLING_MONTHLY_GOAL = '/cycling/monthly-goal',
   CYCLING_CHORE = '/cycling/chore',
-  WAKEUP = '/wakeup',
 }
 
-export const publicApiRoutes = [
-  ApiRoutes.USERS_SIGNUP,
-  ApiRoutes.USERS_LOGIN_CODE,
-  ApiRoutes.USERS_LOGIN,
-  ApiRoutes.WAKEUP,
-]
+export const publicApiRoutes = [ApiRoutes.AUTH_VERIFY_CODE, ApiRoutes.AUTH_LOGIN]
 
 export const authenticatedApiRoutes = [
-  ApiRoutes.USERS,
-  ApiRoutes.USERS_TOKEN_REFRESH,
-  ApiRoutes.USERS_DATA_BACKUP,
-  ApiRoutes.USERS_SETTINGS,
+  ApiRoutes.AUTH_TOKEN_REFRESH,
+  ApiRoutes.DATA_BACKUP,
+  ApiRoutes.SETTINGS,
   ApiRoutes.SHORTCUTS,
   ApiRoutes.NOTES,
   ApiRoutes.PERSONAL_DATA,

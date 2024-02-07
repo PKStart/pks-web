@@ -17,7 +17,7 @@ import { DictionaryResult } from './korean.types'
             matTooltip="Sync word list"
             matTooltipPosition="left"
             (click)="refetch()"
-            [disabled]="(loading$ | async) || (disabled$ | async)"
+            [disabled]="(loading$ | async) || ((disabled$ | async) ?? false)"
           >
             <mat-icon>sync</mat-icon>
           </button>

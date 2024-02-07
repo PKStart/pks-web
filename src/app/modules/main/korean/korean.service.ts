@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { KoreanDictItem, ProxyRequest } from 'pks-common'
+import { KoreanDictItem } from '@kinpeter/pk-common'
 import { differenceInDays, parseISO } from 'date-fns'
 import { StoreKeys } from '../../../constants/constants'
 import { Store } from '../../../utils/store'
@@ -8,6 +8,7 @@ import { ApiService } from '../../shared/services/api.service'
 import { NotificationService } from '../../shared/services/notification.service'
 import { SettingsStore } from '../../shared/services/settings.store'
 import { PreResults, DictionaryResult } from './korean.types'
+import { parseError } from '../../../utils/parse-error'
 
 interface KoreanState {
   kor: string[]
@@ -42,7 +43,7 @@ export class KoreanService extends Store<KoreanState> {
     private notificationService: NotificationService
   ) {
     super(initialState)
-    if (!settingsStore.koreanUrl) {
+    if (!this.settingsStore.koreanUrl) {
       this.setState({ disabled: true })
       return
     }
@@ -65,30 +66,24 @@ export class KoreanService extends Store<KoreanState> {
       return
     }
     this.setState({ loading: true })
-    this.apiService
-      .post<ProxyRequest, KoreanDictItem[]>(ApiRoutes.PROXY_KOREAN, {
-        url: this.settingsStore.koreanUrl as string,
-      })
-      .subscribe({
-        next: res => {
-          localStorage.setItem(
-            StoreKeys.KOREAN,
-            JSON.stringify({
-              lastFetch: new Date().toISOString(),
-              items: res,
-            })
-          )
-          this.setState({ loading: false })
-          this.createLists(res)
-          this.getRandomWord()
-        },
-        error: err => {
-          this.setState({ loading: false })
-          this.notificationService.showError(
-            'Failed to fetch Korean word list. ' + err.error.message
-          )
-        },
-      })
+    this.apiService.get<KoreanDictItem[]>(ApiRoutes.PROXY_KOREAN).subscribe({
+      next: res => {
+        localStorage.setItem(
+          StoreKeys.KOREAN,
+          JSON.stringify({
+            lastFetch: new Date().toISOString(),
+            items: res,
+          })
+        )
+        this.setState({ loading: false })
+        this.createLists(res)
+        this.getRandomWord()
+      },
+      error: err => {
+        this.setState({ loading: false })
+        this.notificationService.showError('Failed to fetch Korean word list. ' + parseError(err))
+      },
+    })
   }
 
   public getTranslations(word: string): DictionaryResult[] {

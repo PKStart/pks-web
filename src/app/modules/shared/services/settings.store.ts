@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core'
-import { UserSettings } from 'pks-common'
+import { PkStartSettings } from '@kinpeter/pk-common'
 import { Observable } from 'rxjs'
 import { StoreKeys } from '../../../constants/constants'
 import { LocalStore } from '../../../utils/store'
+
+export type UserSettings = Omit<PkStartSettings, 'userId'>
 
 const initialState: UserSettings = {
   shortcutIconBaseUrl: null,
@@ -13,6 +15,8 @@ const initialState: UserSettings = {
   stravaClientId: null,
   stravaClientSecret: null,
   stravaRedirectUri: null,
+  name: null,
+  id: '',
 }
 
 @Injectable({ providedIn: 'root' })

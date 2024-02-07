@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core'
-import { PersonalData, UUID } from 'pks-common'
+import { PersonalData, UUID } from '@kinpeter/pk-common'
 import { NotificationService } from '../../shared/services/notification.service'
 
 @Component({

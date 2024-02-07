@@ -9,17 +9,17 @@ import { CyclingService } from './cycling.service'
     </button>
     <mat-menu #menu="matMenu" class="app-bar__more-menu">
       <div mat-menu-item>
-        <mat-checkbox [checked]="goalsOpen$ | async" (change)="toggleWidget('goals')">
+        <mat-checkbox [checked]="(goalsOpen$ | async) ?? true" (change)="toggleWidget('goals')">
           Show goals
         </mat-checkbox>
       </div>
       <div mat-menu-item>
-        <mat-checkbox [checked]="statsOpen$ | async" (change)="toggleWidget('stats')">
+        <mat-checkbox [checked]="(statsOpen$ | async) ?? true" (change)="toggleWidget('stats')">
           Show stats
         </mat-checkbox>
       </div>
       <div mat-menu-item>
-        <mat-checkbox [checked]="choresOpen$ | async" (change)="toggleWidget('chores')">
+        <mat-checkbox [checked]="(choresOpen$ | async) ?? true" (change)="toggleWidget('chores')">
           Show chores
         </mat-checkbox>
       </div>

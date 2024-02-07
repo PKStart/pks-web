@@ -1,23 +1,16 @@
 import { Injectable } from '@angular/core'
 import { Observable, of } from 'rxjs'
 import { differenceInHours, isAfter, parseISO } from 'date-fns'
-import {
-  LoginCodeRequest,
-  LoginRequest,
-  LoginResponse,
-  TokenRefreshRequest,
-  TokenResponse,
-  UUID,
-} from 'pks-common'
-import { tap } from 'rxjs/operators'
+import { map, switchMap, tap } from 'rxjs/operators'
 import { StoreKeys } from '../../constants/constants'
-import { omit } from '../../utils/objects'
 import { AppBarService } from '../main/app-bar/app-bar.service'
 import { ApiRoutes } from '../shared/services/api-routes'
 import { ApiService } from '../shared/services/api.service'
 import { NotificationService } from '../shared/services/notification.service'
 import { SettingsStore } from '../shared/services/settings.store'
 import { AuthState, AuthStore } from './auth.store'
+import { AuthData, EmailRequest, LoginVerifyRequest, PkStartSettings } from '@kinpeter/pk-common'
+import { parseError } from '../../utils/parse-error'
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -41,25 +34,27 @@ export class AuthService {
     // for testing purposes, since email authentication is hard to test
     if (email === 'main@test.com') return of(undefined)
     // ---
-    return this.api.post<LoginCodeRequest, void>(ApiRoutes.USERS_LOGIN_CODE, { email })
+    return this.api.post<EmailRequest, void>(ApiRoutes.AUTH_LOGIN, { email })
   }
 
-  public login(loginCode: string): Observable<LoginResponse> {
+  public verifyLoginCode(loginCode: string): Observable<{ done: boolean }> {
     const email = this.authStore.current.email
     if (!email) {
       throw new Error('Email was not saved in store!')
     }
     return this.api
-      .post<LoginRequest, LoginResponse>(ApiRoutes.USERS_LOGIN, { email, loginCode })
+      .post<LoginVerifyRequest, AuthData>(ApiRoutes.AUTH_VERIFY_CODE, { email, loginCode })
       .pipe(
-        tap((res: LoginResponse) => {
-          const authInfo = omit(res, ['settings'])
-          const { settings } = res
-          this.authStore.setLogin(authInfo)
-          this.settingsStore.setSettings(settings)
-          const expires = parseISO(res.expiresAt as unknown as string)
-          this.scheduleTokenRefresh(expires, res.id)
-        })
+        tap((authData: AuthData) => {
+          this.authStore.setLogin(authData)
+          const expires = parseISO(authData.expiresAt as unknown as string)
+          this.scheduleTokenRefresh(expires)
+        }),
+        switchMap(() => this.api.get<PkStartSettings>(ApiRoutes.SETTINGS)),
+        tap((res: PkStartSettings) => {
+          this.settingsStore.setSettings(res)
+        }),
+        map(() => ({ done: true }))
       )
   }
 
@@ -80,18 +75,18 @@ export class AuthService {
       this.logout()
       return
     }
-    this.scheduleTokenRefresh(expires, id)
+    this.scheduleTokenRefresh(expires)
   }
 
-  private scheduleTokenRefresh(expiresAt: Date, userId: UUID): void {
+  private scheduleTokenRefresh(expiresAt: Date): void {
     this.unscheduleTokenRefresh()
     const now = new Date()
     const hoursLeft = differenceInHours(expiresAt, now)
     if (hoursLeft < 48) {
-      this.refreshToken(userId)
+      this.refreshToken()
     } else {
       this.refreshTimer = setTimeout(() => {
-        this.refreshToken(userId)
+        this.refreshToken()
       }, (hoursLeft - 48) * 60 * 60 * 1000)
     }
   }
@@ -103,18 +98,16 @@ export class AuthService {
     }
   }
 
-  private refreshToken(userId: UUID): void {
-    this.api
-      .post<TokenRefreshRequest, TokenResponse>(ApiRoutes.USERS_TOKEN_REFRESH, { userId })
-      .subscribe({
-        next: res => {
-          this.authStore.setNewToken(res)
-          const expires = parseISO(res.expiresAt as unknown as string)
-          this.scheduleTokenRefresh(expires, this.authStore.current.id!)
-        },
-        error: err => {
-          this.notificationService.showError('Token refresh error: ' + err.error.message)
-        },
-      })
+  private refreshToken(): void {
+    this.api.post<void, AuthData>(ApiRoutes.AUTH_TOKEN_REFRESH, undefined).subscribe({
+      next: res => {
+        this.authStore.setNewToken(res)
+        const expires = parseISO(res.expiresAt as unknown as string)
+        this.scheduleTokenRefresh(expires)
+      },
+      error: err => {
+        this.notificationService.showError('Token refresh error: ' + parseError(err))
+      },
+    })
   }
 }

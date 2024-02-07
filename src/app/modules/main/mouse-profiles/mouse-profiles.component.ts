@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core'
-import { GameProfile } from 'pks-common'
+import { GameProfile } from '@kinpeter/pk-common'
 import { combineLatest, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { AppBarService } from '../app-bar/app-bar.service'
@@ -16,7 +16,7 @@ import { MouseProfilesService } from './mouse-profiles.service'
           matTooltip="Sync profiles"
           matTooltipPosition="left"
           (click)="refetch()"
-          [disabled]="loading$ | async"
+          [disabled]="(loading$ | async) ?? false"
         >
           <mat-icon>sync</mat-icon>
         </button>
