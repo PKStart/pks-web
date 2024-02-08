@@ -23,6 +23,10 @@ import { CustomValidators } from '../../../utils/validators'
           <input formControlName="weatherApiKey" matInput type="text" />
         </mat-form-field>
         <mat-form-field appearance="fill">
+          <mat-label>Unsplash API key</mat-label>
+          <input formControlName="unsplashApiKey" matInput type="text" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
           <mat-label>Shortcut tiles icon base URL</mat-label>
           <input formControlName="shortcutIconBaseUrl" matInput type="text" />
         </mat-form-field>
@@ -75,6 +79,7 @@ export class SettingsDialogComponent {
       name: [data.name],
       locationApiKey: [data.locationApiKey],
       weatherApiKey: [data.weatherApiKey],
+      unsplashApiKey: [data.unsplashApiKey],
       shortcutIconBaseUrl: [data.shortcutIconBaseUrl, CustomValidators.url],
       birthdaysUrl: [data.birthdaysUrl, CustomValidators.url],
       koreanUrl: [data.koreanUrl, CustomValidators.url],

@@ -10,6 +10,7 @@ const initialState: UserSettings = {
   shortcutIconBaseUrl: null,
   weatherApiKey: null,
   locationApiKey: null,
+  unsplashApiKey: null,
   birthdaysUrl: null,
   koreanUrl: null,
   stravaClientId: null,
@@ -30,6 +31,7 @@ export class SettingsStore extends LocalStore<UserSettings> {
       return {
         weatherApiKey: state.weatherApiKey,
         locationApiKey: state.locationApiKey,
+        unsplashApiKey: state.unsplashApiKey,
       }
     })
   }

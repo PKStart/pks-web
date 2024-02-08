@@ -1,11 +1,12 @@
 import { Component } from '@angular/core'
 import { AppBarService } from './app-bar/app-bar.service'
+import { RandomBackgroundService } from '../shared/services/random-background.service'
 
 @Component({
   selector: 'pk-main',
   template: `
     <pk-app-bar></pk-app-bar>
-    <div class="main-content">
+    <div class="main-content" [style.background-image]="imageUrl$ | async">
       <div class="main-left">
         <div class="column col-1">
           <pk-notes *ngIf="appBarService.notesOpen$ | async"></pk-notes>
@@ -42,6 +43,9 @@ import { AppBarService } from './app-bar/app-bar.service'
         gap: 1rem;
         overflow-y: auto;
         padding: 1rem;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
 
         .main-left,
         .main-right {
@@ -73,5 +77,10 @@ import { AppBarService } from './app-bar/app-bar.service'
   ],
 })
 export class MainComponent {
-  constructor(public appBarService: AppBarService) {}
+  public imageUrl$ = this.randomBackgroundService.imageUrl$
+
+  constructor(
+    public appBarService: AppBarService,
+    private randomBackgroundService: RandomBackgroundService
+  ) {}
 }

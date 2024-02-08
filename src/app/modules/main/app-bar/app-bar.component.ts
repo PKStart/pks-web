@@ -6,6 +6,7 @@ import { DataBackupService } from '../data-backup/data-backup.service'
 import { SettingsService } from '../settings/settings.service'
 import { AppBarService } from './app-bar.service'
 import { environment } from '../../../../environments/environment'
+import { RandomBackgroundService } from '../../shared/services/random-background.service'
 
 @Component({
   selector: 'pk-app-bar',
@@ -68,7 +69,29 @@ import { environment } from '../../../../environments/environment'
           today
         </mat-icon>
       </button>
+
       <pk-notifications></pk-notifications>
+
+      <ng-container *ngIf="randomBgEnabled$ | async">
+        <button
+          mat-icon-button
+          [matTooltip]="(imageDescription$ | async) ?? 'Background image'"
+          [matMenuTriggerFor]="backgroundImageControls"
+        >
+          <mat-icon>photo</mat-icon>
+        </button>
+        <mat-menu #backgroundImageControls="matMenu" class="app-bar__more-menu">
+          <button mat-menu-item (click)="loadNewBackground()">
+            <mat-icon>panorama</mat-icon>
+            <span>Load new image</span>
+          </button>
+          <button mat-menu-item (click)="removeBackground()">
+            <mat-icon>cancel_presentation</mat-icon>
+            <span>Remove background</span>
+          </button>
+        </mat-menu>
+      </ng-container>
+
       <button mat-icon-button matTooltip="More..." [matMenuTriggerFor]="menu">
         <mat-icon>more_horiz</mat-icon>
       </button>
@@ -121,6 +144,8 @@ export class AppBarComponent {
   public isLightTheme = false
   public birthdaysToday$ = this.birthdaysService.hasBirthdaysToday$
   public version = environment.version
+  public randomBgEnabled$ = this.randomBackgroundService.enabled$
+  public imageDescription$ = this.randomBackgroundService.description$
 
   constructor(
     private authService: AuthService,
@@ -128,6 +153,7 @@ export class AppBarComponent {
     private birthdaysService: BirthdaysService,
     private settingsService: SettingsService,
     public appBarService: AppBarService,
+    private randomBackgroundService: RandomBackgroundService,
     private renderer: Renderer2
   ) {}
 
@@ -151,5 +177,13 @@ export class AppBarComponent {
 
   public openSettings(): void {
     this.settingsService.openDialog()
+  }
+
+  public loadNewBackground(): void {
+    this.randomBackgroundService.getNewImage()
+  }
+
+  public removeBackground(): void {
+    this.randomBackgroundService.removeBackground()
   }
 }
