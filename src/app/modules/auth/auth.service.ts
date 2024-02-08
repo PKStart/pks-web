@@ -75,6 +75,7 @@ export class AuthService {
       this.logout()
       return
     }
+    this.refreshToken()
     this.scheduleTokenRefresh(expires)
   }
 
