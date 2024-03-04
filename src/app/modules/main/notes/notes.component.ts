@@ -108,7 +108,7 @@ export class NotesComponent implements OnDestroy {
         map(values => ({
           ...values,
           text: values.text || null,
-          links: values?.links?.length ? values.links : null,
+          links: values?.links ?? [],
         })),
         switchMap(request => this.notesService.createNote(request))
       )
@@ -130,7 +130,7 @@ export class NotesComponent implements OnDestroy {
           ...note,
           ...values,
           text: values.text || null,
-          links: values?.links?.length ? values.links : [],
+          links: values?.links ?? [],
         })),
         switchMap(request => this.notesService.updateNote(request))
       )
