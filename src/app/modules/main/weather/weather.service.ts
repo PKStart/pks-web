@@ -28,7 +28,7 @@ export class WeatherService extends Store<WeatherState> {
   /**
    * API docs:
    * LocationIQ: https://locationiq.com/docs
-   * OpenWeatherMap: https://openweathermap.org/api/one-call-api
+   * OpenWeatherMap: https://openweathermap.org/api/one-call-3
    */
   private locationApiKey: string | null = null
   private weatherApiKey: string | null = null
@@ -111,7 +111,7 @@ export class WeatherService extends Store<WeatherState> {
     if (!this.weatherApiKey || !this.coords) return
     this.setState({ loading: true })
     this.http
-      .get<WeatherResponse>('https://api.openweathermap.org/data/2.5/onecall', {
+      .get<WeatherResponse>('https://api.openweathermap.org/data/3.0/onecall', {
         params: {
           lat: this.coords.latitude,
           lon: this.coords.longitude,
