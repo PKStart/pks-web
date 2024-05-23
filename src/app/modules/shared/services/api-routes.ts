@@ -2,6 +2,7 @@ export enum ApiRoutes {
   AUTH_LOGIN = '/auth/login',
   AUTH_VERIFY_CODE = '/auth/verify-code',
   AUTH_TOKEN_REFRESH = '/auth/token-refresh',
+  AUTH_PASSWORD_LOGIN = '/auth/password-login',
   SETTINGS = '/start-settings',
   DATA_BACKUP = '/data-backup',
   SHORTCUTS = '/shortcuts',
@@ -15,7 +16,11 @@ export enum ApiRoutes {
   CYCLING_CHORE = '/cycling/chore',
 }
 
-export const publicApiRoutes = [ApiRoutes.AUTH_VERIFY_CODE, ApiRoutes.AUTH_LOGIN]
+export const publicApiRoutes = [
+  ApiRoutes.AUTH_VERIFY_CODE,
+  ApiRoutes.AUTH_LOGIN,
+  ApiRoutes.AUTH_PASSWORD_LOGIN,
+]
 
 export const authenticatedApiRoutes = [
   ApiRoutes.AUTH_TOKEN_REFRESH,

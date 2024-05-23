@@ -31,6 +31,7 @@ import { parseError } from '../../utils/parse-error'
               (keyup.enter)="onRequestLoginCode()"
             />
             <button
+              *ngIf="!usePassword"
               matSuffix
               mat-icon-button
               color="primary"
@@ -41,6 +42,38 @@ import { parseError } from '../../utils/parse-error'
               <mat-icon>arrow_forward</mat-icon>
             </button>
           </mat-form-field>
+          <mat-form-field *ngIf="usePassword" appearance="outline" color="primary">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              type="password"
+              name="auth-password"
+              [(ngModel)]="password"
+              (keyup.enter)="onPasswordLogin()"
+            />
+            <button
+              matSuffix
+              mat-icon-button
+              color="primary"
+              data-id="password-login-button"
+              [disabled]="!password.length"
+              (click)="onPasswordLogin()"
+            >
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </mat-form-field>
+          <p>
+            <small *ngIf="!usePassword">
+              <a data-id="use-password-link" [routerLink]="" (click)="usePassword = true">
+                Use password
+              </a>
+            </small>
+            <small *ngIf="usePassword">
+              <a data-id="use-email-login-link" [routerLink]="" (click)="usePassword = false">
+                Use email login code
+              </a>
+            </small>
+          </p>
           <p>
             <small *ngIf="hasEmailSaved">
               <a data-id="have-login-code-link" [routerLink]="" (click)="step = 1">
@@ -58,7 +91,7 @@ import { parseError } from '../../utils/parse-error'
               type="text"
               name="auth-loginCode"
               [(ngModel)]="loginCode"
-              (keyup.enter)="onLogin()"
+              (keyup.enter)="onCodeLogin()"
             />
             <button
               matSuffix
@@ -66,7 +99,7 @@ import { parseError } from '../../utils/parse-error'
               color="primary"
               data-id="login-button"
               [disabled]="loginCode.length !== 6"
-              (click)="onLogin()"
+              (click)="onCodeLogin()"
             >
               <mat-icon>arrow_forward</mat-icon>
             </button>
@@ -106,6 +139,9 @@ import { parseError } from '../../utils/parse-error'
         align-items: center;
         justify-content: center;
       }
+      a {
+        cursor: pointer;
+      }
     `,
   ],
 })
@@ -113,8 +149,10 @@ export class AuthComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription()
   public email = ''
   public loginCode = ''
+  public password = ''
   public step = 0
   public hasEmailSaved = false
+  public usePassword = false
   public loading = false
 
   constructor(
@@ -133,6 +171,9 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   public onRequestLoginCode(): void {
+    if (this.usePassword) {
+      return
+    }
     this.loading = true
     this.authService.requestLoginCode(this.email).subscribe({
       next: () => {
@@ -147,9 +188,23 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.email = ''
   }
 
-  public onLogin(): void {
+  public onCodeLogin(): void {
     this.loading = true
     this.authService.verifyLoginCode(this.loginCode).subscribe({
+      next: () => {
+        this.loading = false
+        this.router.navigate(['/']).then()
+      },
+      error: err => {
+        this.notificationService.showError('Login failed. ' + parseError(err))
+        this.loading = false
+      },
+    })
+  }
+
+  public onPasswordLogin(): void {
+    this.loading = true
+    this.authService.verifyPassword({ email: this.email, password: this.password }).subscribe({
       next: () => {
         this.loading = false
         this.router.navigate(['/']).then()

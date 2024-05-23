@@ -9,7 +9,13 @@ import { ApiService } from '../shared/services/api.service'
 import { NotificationService } from '../shared/services/notification.service'
 import { SettingsStore } from '../shared/services/settings.store'
 import { AuthState, AuthStore } from './auth.store'
-import { AuthData, EmailRequest, LoginVerifyRequest, PkStartSettings } from '@kinpeter/pk-common'
+import {
+  AuthData,
+  EmailRequest,
+  LoginVerifyRequest,
+  PasswordAuthRequest,
+  PkStartSettings,
+} from '@kinpeter/pk-common'
 import { parseError } from '../../utils/parse-error'
 
 @Injectable({ providedIn: 'root' })
@@ -44,6 +50,23 @@ export class AuthService {
     }
     return this.api
       .post<LoginVerifyRequest, AuthData>(ApiRoutes.AUTH_VERIFY_CODE, { email, loginCode })
+      .pipe(
+        tap((authData: AuthData) => {
+          this.authStore.setLogin(authData)
+          const expires = parseISO(authData.expiresAt as unknown as string)
+          this.scheduleTokenRefresh(expires)
+        }),
+        switchMap(() => this.api.get<PkStartSettings>(ApiRoutes.SETTINGS)),
+        tap((res: PkStartSettings) => {
+          this.settingsStore.setSettings(res)
+        }),
+        map(() => ({ done: true }))
+      )
+  }
+
+  public verifyPassword(request: PasswordAuthRequest): Observable<{ done: boolean }> {
+    return this.api
+      .post<PasswordAuthRequest, AuthData>(ApiRoutes.AUTH_PASSWORD_LOGIN, request)
       .pipe(
         tap((authData: AuthData) => {
           this.authStore.setLogin(authData)
