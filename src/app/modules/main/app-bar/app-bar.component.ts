@@ -100,6 +100,10 @@ import { RandomBackgroundService } from '../../shared/services/random-background
           <mat-icon>{{ isLightTheme ? 'dark_mode' : 'light_mode' }}</mat-icon>
           <span>{{ isLightTheme ? 'Dark theme' : 'Light theme' }}</span>
         </button>
+        <button mat-menu-item (click)="requestBackupEmail()">
+          <mat-icon>cloud_download</mat-icon>
+          <span>Data backup (email)</span>
+        </button>
         <button mat-menu-item (click)="requestBackup()">
           <mat-icon>cloud_download</mat-icon>
           <span>Data backup</span>
@@ -171,8 +175,12 @@ export class AppBarComponent {
     location.reload()
   }
 
+  public requestBackupEmail(): void {
+    this.dataBackupService.sendBackupEmailRequest()
+  }
+
   public requestBackup(): void {
-    this.dataBackupService.sendBackupRequest()
+    this.dataBackupService.getBackupData()
   }
 
   public openSettings(): void {
